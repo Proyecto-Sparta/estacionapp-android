@@ -15,11 +15,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -27,13 +27,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 @SuppressWarnings("FieldCanBeLocal")
 public class EstacionAppActivity extends AppCompatActivity {
 
+    private static final String[] REQUIRED_PERMISSIONS = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+    private static final int REQUEST_CODE = 9000;
+
     private Marker myPosition;
     private MapView mapView;
     private GoogleMap googleMap;
     private DrawerLayout drawer;
-    private NavigationView navigationView;
 
-    private final int REQUEST_CODE = 9000;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +60,7 @@ public class EstacionAppActivity extends AppCompatActivity {
 
     private void setupNavigation() {
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(getOnNavigationItemSelectedListener());
+        navigationView.setNavigationItemSelectedListener(this::onNavigationMenuItemSelected);
     }
 
     private void setupDrawer(Toolbar toolbar) {
@@ -73,17 +75,16 @@ public class EstacionAppActivity extends AppCompatActivity {
         mapView = (MapView) findViewById(R.id.map_view);
         mapView.onCreate(new Bundle());
         mapView.onStart();
-        mapView.getMapAsync(getOnMapReadyCallback());
+        mapView.getMapAsync(this::onMapReadyCallback);
     }
 
     private void requestLocationPermission() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission.ACCESS_FINE_LOCATION }, REQUEST_CODE);
+            ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE);
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 250, 0, getListener());
-
     }
 
     private ActionBarDrawerToggle setupToggle(Toolbar toolbar) {
@@ -105,32 +106,25 @@ public class EstacionAppActivity extends AppCompatActivity {
         }
     }
 
-    @NonNull
-    private OnMapReadyCallback getOnMapReadyCallback() {
-        return map -> {
-            googleMap = map;
-            googleMap.getUiSettings().setCompassEnabled(true);
-            googleMap.getUiSettings().setZoomControlsEnabled(true);
-        };
+    private void onMapReadyCallback(GoogleMap map) {
+        googleMap = map;
+        googleMap.getUiSettings().setCompassEnabled(true);
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
     }
 
-    @NonNull
-    private NavigationView.OnNavigationItemSelectedListener getOnNavigationItemSelectedListener() {
-        return (item) -> {
+    private boolean onNavigationMenuItemSelected(MenuItem item) {
+        int id = item.getItemId();
 
-            int id = item.getItemId();
+        if (id == R.id.nav_camera) return true;
+        else if (id == R.id.nav_send) return true;
+        else if (id == R.id.nav_share) return true;
+        else if (id == R.id.nav_manage) return true;
+        else if (id == R.id.nav_gallery) return true;
+        else if (id == R.id.nav_slideshow) return true;
 
-            if (id == R.id.nav_camera) return true;
-            else if (id == R.id.nav_send) return true;
-            else if (id == R.id.nav_share) return true;
-            else if (id == R.id.nav_manage) return true;
-            else if (id == R.id.nav_gallery) return true;
-            else if (id == R.id.nav_slideshow) return true;
+        closeDrawer();
 
-            closeDrawer();
-
-            return true;
-        };
+        return true;
     }
 
     @NonNull
