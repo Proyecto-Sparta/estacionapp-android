@@ -104,20 +104,9 @@ class EstacionAppActivity : AppCompatActivity() {
     }
 
     private fun onNavigationMenuItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
 
-        if (id == R.id.nav_camera) {
-            return true
-        } else if (id == R.id.nav_send) {
-            return true
-        } else if (id == R.id.nav_share) {
-            return true
-        } else if (id == R.id.nav_manage) {
-            return true
-        } else if (id == R.id.nav_gallery) {
-            return true
-        } else if (id == R.id.nav_slideshow) {
-            return true
+        when (item.itemId) {
+            R.id.nav_profile, R.id.nav_log_out, R.id.nav_search -> return true
         }
 
         closeDrawer()
@@ -126,7 +115,10 @@ class EstacionAppActivity : AppCompatActivity() {
     }
 
     private val listener = object : LocationListener {
-        override fun onLocationChanged(location: Location) { updateMarker(location) }
+        override fun onLocationChanged(location: Location) {
+            updateMarker(location)
+        }
+
         override fun onStatusChanged(s: String, i: Int, bundle: Bundle) {}
         override fun onProviderEnabled(s: String) {}
         override fun onProviderDisabled(s: String) {}

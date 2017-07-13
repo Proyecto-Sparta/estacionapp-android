@@ -6,4 +6,8 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
+    <string name="nav_submenu_title">Account</string>
+    <string name="nav_log_out">Log out</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nav_search">Search</string>
 </resources>
