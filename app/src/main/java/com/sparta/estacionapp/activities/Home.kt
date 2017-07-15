@@ -1,6 +1,5 @@
 package com.sparta.estacionapp.activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -11,10 +10,11 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
+import android.widget.Toast
 import com.sparta.estacionapp.R
-import fragments.Map
-import fragments.Profile
-import fragments.Search
+import com.sparta.estacionapp.fragments.Map
+import com.sparta.estacionapp.fragments.Profile
+import com.sparta.estacionapp.fragments.Search
 
 class Home : AppCompatActivity() {
 
@@ -29,11 +29,14 @@ class Home : AppCompatActivity() {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
 
-        loadFragment(Search())
+        if (savedInstanceState == null) {
+            loadFragment(Search())
+        }
 
         setupDrawer(toolbar)
         setupNavigation()
     }
+
 
     override fun onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -78,8 +81,9 @@ class Home : AppCompatActivity() {
     }
 
     private fun logOut() {
-        val loginActivity = Intent(this, Login::class.java)
-        startActivity(loginActivity)
+        Toast
+                .makeText(this, "Logout not implemented yet!", Toast.LENGTH_LONG)
+                .show()
     }
 
     private fun loadFragment(fragment: Fragment) {

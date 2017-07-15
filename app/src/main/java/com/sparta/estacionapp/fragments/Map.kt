@@ -1,4 +1,4 @@
-package fragments
+package com.sparta.estacionapp.fragments
 
 
 import android.Manifest
@@ -49,7 +49,7 @@ class Map : Fragment() {
     private fun requestLocationPermission() {
         val locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return ActivityCompat.requestPermissions(activity, Map.REQUIRED_PERMISSIONS, Map.REQUEST_CODE)
+            return ActivityCompat.requestPermissions(activity, REQUIRED_PERMISSIONS, REQUEST_CODE)
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 250, 0f, listener)
     }
