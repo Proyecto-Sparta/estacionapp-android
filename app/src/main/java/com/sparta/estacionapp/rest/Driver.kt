@@ -10,7 +10,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 
 
-class Driver(val context: Context) {
+class DriverService(val context: Context) {
 
     val api: DriverService = Retrofit
             .Builder()
