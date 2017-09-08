@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.widget.Toast
+import butterknife.bindView
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.fragments.Map
 import com.sparta.estacionapp.fragments.Profile
@@ -19,13 +20,16 @@ import com.sparta.estacionapp.fragments.Search
 class Home : AppCompatActivity() {
 
     private val fragManager: FragmentManager = supportFragmentManager
-    private lateinit var drawer: DrawerLayout
 
-    private lateinit var navigationView: NavigationView
+    private val drawer: DrawerLayout by bindView(R.id.drawer_layout)
+    private val navigationView: NavigationView by bindView(R.id.nav_view)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_estacion_app)
+
+        butterknife.BuildConfig()
+
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
 
@@ -47,12 +51,10 @@ class Home : AppCompatActivity() {
     }
 
     private fun setupNavigation() {
-        navigationView = findViewById(R.id.nav_view) as NavigationView
         navigationView.setNavigationItemSelectedListener { this.onNavigationMenuItemSelected(it) }
     }
 
     private fun setupDrawer(toolbar: Toolbar) {
-        drawer = findViewById(R.id.drawer_layout) as DrawerLayout
         val toggle = setupToggle(toolbar)
         drawer.addDrawerListener(toggle)
         toggle.syncState()
