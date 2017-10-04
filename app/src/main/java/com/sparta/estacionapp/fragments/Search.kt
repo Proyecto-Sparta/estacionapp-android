@@ -10,7 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.models.Garage
+import com.sparta.estacionapp.rest.DriverService
 import com.sparta.estacionapp.ui.adapters.RecyclerViewGarageAdapter
+import kotlinx.android.synthetic.main.fragment_search.*
+
 
 
 /**
@@ -23,18 +26,25 @@ class Search : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        //val loginDigest = "Basic Q2hyaXMgTWNDb3JkOnBhc3N3b3Jk"
-        //DriverService(context).login(loginDigest)
+
         val fragment = inflater!!.inflate(R.layout.fragment_search, container, false)
 
         garageSearchResultsView = fragment.findViewById(R.id.garage_search_results)
         garageSearchResultsView.layoutManager = LinearLayoutManager(activity.applicationContext)
 
-        val garages = mutableListOf(Garage("El conito srl"), Garage("La camioneta loca"))
-        garageSearchResultsView.adapter = RecyclerViewGarageAdapter(garages)
+//        val garages = mutableListOf(Garage("El conito srl"), Garage("La camioneta loca"))
+//        garageSearchResultsView.adapter = RecyclerViewGarageAdapter(garages)
 
+        ws_button.setOnClickListener { _ -> requestGarage() }
         return fragment
+    }
+
+    private fun requestGarage() {
+//        val socket = Socket("ws://localhost:4000/socket")
+//        socket.connect()
+//
+//        val channel = socket.chan("garage:sarasa", null)
+//        channel.join()
     }
 
 

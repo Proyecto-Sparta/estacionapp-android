@@ -8,6 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Header
+import java.util.function.Consumer
 
 
 class DriverService(val context: Context) {
@@ -19,11 +20,10 @@ class DriverService(val context: Context) {
             .build()
             .create(DriverService::class.java)
 
-    fun login(digest: String) {
-        api.login(digest).enqueue({ login, response ->
-            login.jwt = response.headers().get(context.getString(R.string.authorizationRequestHeader))!!
-            Log.d("API TEST", "JWT is $login")
-        })
+    fun login(digest: String, onSuccess: (String) -> Unit, onError: (Throwable) -> Unit) {
+        api.login(digest).enqueue({ _, response ->
+            onSuccess.invoke(response.headers().get(context.getString(R.string.authorizationRequestHeader))!!)
+        }, { error -> onError.invoke(error) })
 
     }
 
@@ -35,7 +35,7 @@ class DriverService(val context: Context) {
 
     interface DriverService {
 
-        @GET("/api/driver/login")
+        @GET("/api/drivers/login")
         fun login(@Header("Authorization") loginDigest: String): Call<LoginResponse>
     }
 }

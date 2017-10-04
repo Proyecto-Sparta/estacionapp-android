@@ -3,14 +3,16 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion '26.0.2'
+
     defaultConfig {
         applicationId "com.sparta.estacionapp"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -18,9 +20,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+    }
 }
 
 dependencies {
+    compile 'com.android.support:multidex:1.0.1'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -41,9 +48,20 @@ dependencies {
 
     compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
     compile 'com.jakewharton:butterknife:8.8.1'
+    compile('com.github.eoinsha:JavaPhoenixChannels:0.2') {
+        exclude module: 'groovy-all'
+    }
+
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }
 repositories {
     mavenCentral()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven {
+        url 'https://maven.google.com/'
+        name 'Google'
+    }
 }
+
+
+apply plugin: 'kotlin-android-extensions'

@@ -8,7 +8,7 @@ fun <T> Call<T>.enqueue(success: (result: T, response: Response<T>) -> Unit,
                         failure: (t: Throwable) -> Unit) {
     enqueue(object : Callback<T> {
         override fun onResponse(call: Call<T>?, response: Response<T>?) {
-            success(response!!.body()!!, response!!)
+            success(response!!.body()!!, response)
         }
 
         override fun onFailure(call: Call<T>?, t: Throwable?) {

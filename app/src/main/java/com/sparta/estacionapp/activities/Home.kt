@@ -1,5 +1,7 @@
 package com.sparta.estacionapp.activities
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -11,11 +13,11 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.widget.Toast
-import butterknife.bindView
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.fragments.Map
 import com.sparta.estacionapp.fragments.Profile
 import com.sparta.estacionapp.fragments.Search
+import kotterknife.bindView
 
 class Home : AppCompatActivity() {
 
@@ -30,7 +32,7 @@ class Home : AppCompatActivity() {
 
         butterknife.BuildConfig()
 
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         if (savedInstanceState == null) {
@@ -61,9 +63,8 @@ class Home : AppCompatActivity() {
     }
 
 
-    private fun setupToggle(toolbar: Toolbar): ActionBarDrawerToggle {
-        return ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-    }
+    private fun setupToggle(toolbar: Toolbar): ActionBarDrawerToggle =
+            ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
 
     private fun closeDrawer() {
         drawer.closeDrawer(GravityCompat.START)
@@ -83,9 +84,13 @@ class Home : AppCompatActivity() {
     }
 
     private fun logOut() {
-        Toast
-                .makeText(this, "Logout not implemented yet!", Toast.LENGTH_LONG)
-                .show()
+        getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE)
+                .edit()
+                .remove("jwt")
+                .commit()
+        val intent = Intent(this, Login::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun loadFragment(fragment: Fragment) {
