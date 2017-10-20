@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "538707157913",
+    "firebase_url": "https://estacionapp-1499982667186.firebaseio.com",
+    "project_id": "estacionapp-1499982667186",
+    "storage_bucket": "estacionapp-1499982667186.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:538707157913:android:faa9ee33d5a5e804",
+        "android_client_info": {
+          "package_name": "com.sparta.estacionapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "538707157913-beo1rdq01u97uc1q1fnc0b4aaseb62rj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sparta.estacionapp",
+            "certificate_hash": "a8d9d0e4e2b99974953fc61eef027af4a9a7d4af"
+          }
+        },
+        {
+          "client_id": "538707157913-g8prlf4q5asrnjaum77juhoc6ckl1sgn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2V2ShxZmKTEoycWE7ujgOP5sE6pywXtc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "538707157913-g8prlf4q5asrnjaum77juhoc6ckl1sgn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
