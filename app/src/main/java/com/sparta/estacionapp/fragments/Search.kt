@@ -8,12 +8,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.sparta.estacionapp.R
-import com.sparta.estacionapp.models.Garage
-import com.sparta.estacionapp.rest.DriverService
-import com.sparta.estacionapp.ui.adapters.RecyclerViewGarageAdapter
-import kotlinx.android.synthetic.main.fragment_search.*
-
+import kotterknife.bindView
 
 
 /**
@@ -22,6 +23,8 @@ import kotlinx.android.synthetic.main.fragment_search.*
 class Search : Fragment() {
 
     private lateinit var garageSearchResultsView: RecyclerView
+
+    private val search: Button by bindView(R.id.ws_button)
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -34,8 +37,22 @@ class Search : Fragment() {
 
 //        val garages = mutableListOf(Garage("El conito srl"), Garage("La camioneta loca"))
 //        garageSearchResultsView.adapter = RecyclerViewGarageAdapter(garages)
+        val database = FirebaseDatabase.getInstance()
+        val myRef = database.getReference("message")
+        myRef.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
 
-        ws_button.setOnClickListener { _ -> requestGarage() }
+            override fun onDataChange(p0: DataSnapshot?) {
+               var a = p0!!.getValue(String::class.java)
+            }
+
+        })
+
+        myRef.setValue("Hello, World!")
+
+        //search.setOnClickListener { _ -> requestGarage() }
         return fragment
     }
 

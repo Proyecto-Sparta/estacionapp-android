@@ -12,17 +12,21 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.Button
 import android.widget.TextView
 
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.rest.DriverService
 
 import kotlinx.android.synthetic.main.activity_login.*
+import kotterknife.bindView
 
 /**
  * A login screen that offers login via email/password.
  */
 class Login : AppCompatActivity() {
+
+    private val signIn: Button by bindView(R.id.sign_in_button)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (loggedIn()) {
@@ -41,7 +45,7 @@ class Login : AppCompatActivity() {
             false
         })
 
-        sign_in_button.setOnClickListener { attemptLogin() }
+        signIn.setOnClickListener { attemptLogin() }
     }
 
     private fun loggedIn(): Boolean {
