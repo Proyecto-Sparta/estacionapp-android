@@ -1,24 +1,26 @@
 package com.sparta.estacionapp.fragments
 
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.android.gms.common.api.Status
+import com.google.android.gms.location.places.Place
+import com.google.android.gms.location.places.ui.PlaceSelectionListener
+import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.models.Garage
+import com.sparta.estacionapp.rest.DriverService
 import com.sparta.estacionapp.ui.adapters.RecyclerViewGarageAdapter
-import kotterknife.bindView
 
 
 /**
@@ -31,13 +33,13 @@ class Search : Fragment() {
     private lateinit var search: Button
     private lateinit var seekRadio: SeekBar
     private lateinit var seekBarValue : TextView
+    private lateinit var placeAutocompleteFragment: SupportPlaceAutocompleteFragment
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         val fragment = inflater!!.inflate(R.layout.fragment_search, container, false)
 
-        search = fragment.findViewById(R.id.ws_button)
         seekRadio = fragment.findViewById(R.id.seek_radio)
         seekBarValue = fragment.findViewById(R.id.txt_radio)
 
@@ -54,10 +56,12 @@ class Search : Fragment() {
             override fun onStopTrackingTouch(seekBar : SeekBar) {}
         })
 
+        initPlaceAutocompleteFragment()
+
         seekRadio.progress = 1000
 
-        val garages = mutableListOf(Garage("El conito srl"), Garage("La camioneta loca"))
-        garageSearchResultsView.adapter = RecyclerViewGarageAdapter(garages)
+        // val garages = mutableListOf(Garage("El conito srl"), Garage("La camioneta loca"))
+
 //        val database = FirebaseDatabase.getInstance()
 //        val myRef = database.getReference("message")
 //        myRef.addListenerForSingleValueEvent(object : ValueEventListener{
@@ -85,8 +89,20 @@ class Search : Fragment() {
 //        channel.join()
     }
 
+    fun initPlaceAutocompleteFragment() {
+        placeAutocompleteFragment = childFragmentManager.findFragmentById(R.id.search_fragment) as SupportPlaceAutocompleteFragment
+        placeAutocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                DriverService(activity).searchGarage(place.latLng.latitude, place.latLng.longitude, seekRadio.progress, {garages ->
+                    garageSearchResultsView.adapter = RecyclerViewGarageAdapter(garages)
+                })
+            }
 
-    override fun onStart() {
-        super.onStart()
+            override fun onError(status: Status) {
+                // TODO: Handle the error.
+                Log.i(TAG, "An error occurred: " + status)
+            }
+        })
     }
+
 }

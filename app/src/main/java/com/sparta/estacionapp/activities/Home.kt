@@ -18,6 +18,7 @@ import com.sparta.estacionapp.fragments.InnerMap
 import com.sparta.estacionapp.fragments.Map
 import com.sparta.estacionapp.fragments.Profile
 import com.sparta.estacionapp.fragments.Search
+import com.sparta.estacionapp.rest.DriverService
 import kotterknife.bindView
 
 class Home : AppCompatActivity() {
@@ -30,6 +31,10 @@ class Home : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_estacion_app)
+
+        val jwt = getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE).getString("jwt", "")
+
+        DriverService.jwt = jwt
 
        // butterknife.BuildConfig()
 

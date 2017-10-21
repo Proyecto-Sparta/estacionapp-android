@@ -6,32 +6,13 @@
     android:orientation="vertical"
     tools:context=".fragments.Search">
 
-    <RelativeLayout
+    <fragment
+        android:id="@+id/search_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/txt_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="90dp"
-            android:layout_alignBaseline="@+id/ws_button"
-            android:layout_alignBottom="@+id/ws_button"
-            android:inputType="text"
-            tools:ignore="LabelFor" />
-
-        <Button
-            android:id="@+id/ws_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:text="@string/search"
-            tools:ignore="RelativeOverlap" />
-
-    </RelativeLayout>
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="90dp"
+        android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment" />
 
     <RelativeLayout
         android:layout_width="match_parent"
