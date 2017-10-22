@@ -2,16 +2,17 @@ package com.sparta.estacionapp.fragments
 
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
+import android.support.v4.content.res.ResourcesCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -184,10 +185,9 @@ class Search : Fragment() {
         markers.clear()
     }
 
-    @SuppressLint("NewApi")
     private fun createCircle(latLng : LatLng) {
         if (circleRadius != null) circleRadius!!.remove()
-        val color = resources.getColor(R.color.colorAccent, activity.theme)
+        val color = getColor()
         val meters = getRadio(seekRadio.progress).toDouble()
         val options = CircleOptions()
                 .center(latLng)
@@ -196,6 +196,14 @@ class Search : Fragment() {
                 .fillColor(withOpacity(color))
                 .strokeColor(color)
         circleRadius = googleMap.addCircle(options)
+    }
+
+    private fun getColor(): Int {
+        val color = ResourcesCompat.getColor(resources, R.color.colorAccent, activity.theme)
+        val r = (color shr 16) and 0xFF
+        val g = (color shr  8) and 0xFF
+        val b = (color shr  0) and 0xFF
+        return Color.rgb(r, g, b)
     }
 
     private fun withOpacity(color: Int) = color.and(0x00FFFFFF).or(0x25000000)
@@ -209,7 +217,7 @@ class Search : Fragment() {
         googleMap.uiSettings.isCompassEnabled = true
         googleMap.uiSettings.isZoomControlsEnabled = true
         googleMap.setOnMarkerClickListener { showMarkerInfo(it) }
-        requestLocationPermission()
+        googleMap.setOnMapLoadedCallback { requestLocationPermission() }
     }
 
     private fun showMarkerInfo(marker: Marker?): Boolean {
