@@ -182,7 +182,7 @@ class Search : Fragment() {
         googleMap.uiSettings.isZoomControlsEnabled = true
         googleMap.setOnMarkerClickListener { openGarageDetails(it) }
         googleMap.setOnMapLoadedCallback { requestLocationPermission() }
-        searchGarages(LatLng(-34.587792, -58.414531))
+        searchGarages(LatLng(-34.585000, -58.414000))
     }
 
     private fun openGarageDetails(marker: Marker?): Boolean {
