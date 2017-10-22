@@ -172,9 +172,7 @@ class Search : Fragment() {
     private fun showMarkerInfo(marker: Marker?): Boolean {
         markers.keys.forEach { it.hideInfoWindow() }
         val garage = markers.getOrDefault(marker!!, null)
-        if (garage != null) {
-            marker.toggleInfoWindow()
-        }
+        if (garage != null) marker.toggleInfoWindow()
         return false
     }
 
@@ -216,7 +214,7 @@ class Search : Fragment() {
     private val seekBarChangeListener: SeekBar.OnSeekBarChangeListener = object : SeekBar.OnSeekBarChangeListener {
         override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
             seekBarValue.text = getRadioText(progress)
-            searchGarages(currentPositionEntry!!.key)
+            if (currentPositionEntry != null) searchGarages(currentPositionEntry!!.key)
         }
 
         override fun onStopTrackingTouch(seekBar: SeekBar) {}
