@@ -5,19 +5,16 @@ import android.animation.AnimatorListenerAdapter
 import android.annotation.TargetApi
 import android.content.Context
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.TextView
-
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.rest.DriverService
-
 import kotlinx.android.synthetic.main.activity_login.*
 import kotterknife.bindView
 
@@ -56,7 +53,7 @@ class Login : AppCompatActivity() {
         getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE)
                 .edit()
                 .putString("jwt", token)
-                .commit()
+                .apply()
     }
 
     private fun logIn() {

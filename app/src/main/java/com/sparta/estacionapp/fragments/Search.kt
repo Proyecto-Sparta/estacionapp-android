@@ -92,7 +92,7 @@ class Search : Fragment() {
 
     private fun getRadioText(progress: Int) = "${getRadio(progress)}m"
 
-    fun getRadio(progress : Int): Int {
+    private fun getRadio(progress : Int): Int {
         return (progress + 1) * 100
     }
 
