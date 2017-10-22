@@ -26,9 +26,11 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.*
+import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.models.Garage
 import com.sparta.estacionapp.rest.DriverService
+import kotlinx.android.synthetic.main.fragment_search.*
 
 class Search : Fragment() {
 
@@ -41,6 +43,10 @@ class Search : Fragment() {
     private lateinit var placeAutocompleteFragment: SupportPlaceAutocompleteFragment
     private lateinit var fragment : View
 
+    private lateinit var slidingView: SlidingUpPanelLayout
+    private lateinit var garageName : TextView
+    private lateinit var garageEmail : TextView
+
     private var currentPositionEntry: PositionEntry<LatLng, Marker>? = null
     private var circleRadius : Circle? = null
     private var markers : MutableMap<Marker, Garage> = mutableMapOf()
@@ -50,10 +56,22 @@ class Search : Fragment() {
 
         fragment = inflater!!.inflate(R.layout.fragment_search, container, false)
 
+        initGarageDetails(fragment)
         initSeekBarRadio(fragment)
         initPlaceAutocompleteFragment()
 
         return fragment
+    }
+
+    private fun getRadio(progress : Int) = (progress + 1) * 100
+    private fun getRadioText(progress: Int) = "${getRadio(progress)}m"
+
+    private fun initGarageDetails(fragment: View) {
+        slidingView = fragment.findViewById(R.id.sliding_layout)
+        garageName = fragment.findViewById(R.id.garage_name)
+        garageEmail = fragment.findViewById(R.id.garage_email)
+
+        slidingView.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
     }
 
     private fun initSeekBarRadio(fragment: View) {
@@ -65,9 +83,6 @@ class Search : Fragment() {
         seekBarValue = fragment.findViewById(R.id.txt_radio)
         seekBarValue.text = getRadioText(seekRadio.progress)
     }
-
-    private fun getRadio(progress : Int) = (progress + 1) * 100
-    private fun getRadioText(progress: Int) = "${getRadio(progress)}m"
 
     private fun initPlaceAutocompleteFragment() {
         placeAutocompleteFragment = childFragmentManager.findFragmentById(R.id.search_fragment) as SupportPlaceAutocompleteFragment
@@ -167,17 +182,19 @@ class Search : Fragment() {
         googleMap.uiSettings.isZoomControlsEnabled = true
         googleMap.setOnMarkerClickListener { openGarageDetails(it) }
         googleMap.setOnMapLoadedCallback { requestLocationPermission() }
+        searchGarages(LatLng(-34.587792, -58.414531))
     }
 
     private fun openGarageDetails(marker: Marker?): Boolean {
-        if (marker == null) return true
-//        markers.keys.forEach { it.hideInfoWindow() }
-//        val garage = markers.getOrDefault(marker!!, Garage.stub())
-//        marker.toggleInfoWindow()
-//        val intent = Intent(context, GarageDetailsActivity::class.java)
-//        intent.putExtra("GARAGE", garage)
-//        startActivity(intent)
-        return false
+        if (marker == currentPositionEntry!!.value) {
+            slidingView.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
+            return false
+        }
+        val garage = markers.getOrDefault(marker!!, Garage.stub())
+        slidingView.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
+        garage_name.text = garage.name
+        garage_email.text = garage.email
+        return true
     }
 
     // ********************
