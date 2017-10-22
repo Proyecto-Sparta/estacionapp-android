@@ -1,6 +1,5 @@
 package com.sparta.estacionapp.fragments
 
-
 import android.Manifest
 import android.content.ContentValues.TAG
 import android.content.Context
@@ -31,10 +30,6 @@ import com.sparta.estacionapp.R
 import com.sparta.estacionapp.models.Garage
 import com.sparta.estacionapp.rest.DriverService
 
-
-/**
- * A simple [Fragment] subclass.
- */
 class Search : Fragment() {
 
     private lateinit var mapView: MapView
@@ -46,6 +41,7 @@ class Search : Fragment() {
     private lateinit var placeAutocompleteFragment: SupportPlaceAutocompleteFragment
     private lateinit var fragment : View
 
+    private var currentPositionEntry: PositionEntry<LatLng, Marker>? = null
     private var circleRadius : Circle? = null
     private var markers : MutableMap<Marker, Garage?> = mutableMapOf()
 
@@ -85,21 +81,13 @@ class Search : Fragment() {
 //    }
 
     private fun initSeekBarRadio(fragment: View) {
-        seekBarValue = fragment.findViewById(R.id.txt_radio)
-
         seekRadio = fragment.findViewById(R.id.seek_radio)
         seekRadio.max = 14
         seekRadio.progress = 9
+        seekRadio.setOnSeekBarChangeListener(seekBarChangeListener)
 
+        seekBarValue = fragment.findViewById(R.id.txt_radio)
         seekBarValue.text = getRadioText(seekRadio.progress)
-
-        seekRadio.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                seekBarValue.text = getRadioText(progress)
-            }
-            override fun onStopTrackingTouch(seekBar: SeekBar) {}
-            override fun onStartTrackingTouch(seekBar: SeekBar) {}
-        })
     }
 
     private fun getRadioText(progress: Int) = "${getRadio(progress)}m"
@@ -110,20 +98,7 @@ class Search : Fragment() {
 
     private fun initPlaceAutocompleteFragment() {
         placeAutocompleteFragment = childFragmentManager.findFragmentById(R.id.search_fragment) as SupportPlaceAutocompleteFragment
-        placeAutocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                DriverService(activity).searchGarage(
-                        place.latLng.latitude,
-                        place.latLng.longitude,
-                        getRadio(seekRadio.progress),
-                        { garages -> updateMarker(place.latLng, garages) }
-                )
-            }
-
-            override fun onError(status: Status) {
-                Log.e(TAG, "An error occurred: " + status)
-            }
-        })
+        placeAutocompleteFragment.setOnPlaceSelectedListener(placeSelectionListener)
     }
 
     override fun onStart() {
@@ -143,10 +118,8 @@ class Search : Fragment() {
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return ActivityCompat.requestPermissions(activity, Search.REQUIRED_PERMISSIONS, Search.REQUEST_CODE)
         }
-        locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, listener, null)
+        locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, null)
     }
-
-
 
     private fun updateMarker(latLng: LatLng, garages : List<Garage> = listOf()) {
         clearMarkers()
@@ -156,8 +129,11 @@ class Search : Fragment() {
     }
 
     private fun addCenterMarker(latLng: LatLng) {
+        if (currentPositionEntry != null) {
+            currentPositionEntry!!.value.remove()
+        }
         val marker = googleMap.addMarker(MarkerOptions().position(latLng))
-        markers.put(marker, null)
+        currentPositionEntry = PositionEntry(latLng, marker)
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, getZoomLevel(circleRadius!!)))
     }
@@ -168,7 +144,7 @@ class Search : Fragment() {
         return (16 - Math.log(scale) / Math.log(2.0)).toFloat()
     }
 
-    private fun createGarageMarkers(garages: List<Garage>) {
+    private fun createGarageMarkers(garages: Collection<Garage>) {
         garages.forEach { garage ->
             val location = garage.latLng()
             val markerOption = MarkerOptions()
@@ -224,18 +200,20 @@ class Search : Fragment() {
         markers.keys.forEach { it.hideInfoWindow() }
         val garage = markers.getOrDefault(marker!!, null)
         if (garage != null) {
-            if (marker.isInfoWindowShown) {
-                marker.showInfoWindow()
-            } else {
-                marker.hideInfoWindow()
-            }
+            marker.toggleInfoWindow()
         }
         return false
     }
 
-    private val listener = object : LocationListener {
+    // ********************
+    // Listeners
+    // ********************
+
+    private val locationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
-            updateMarker(LatLng(location.latitude, location.longitude))
+            if (currentPositionEntry == null) {
+                updateMarker(LatLng(location.latitude, location.longitude))
+            }
         }
 
         override fun onProviderDisabled(p0: String?) {}
@@ -243,9 +221,53 @@ class Search : Fragment() {
         override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {}
     }
 
+    private val placeSelectionListener: PlaceSelectionListener = object : PlaceSelectionListener {
+        override fun onPlaceSelected(place: Place) {
+            searchGarages(place.latLng)
+        }
+
+        override fun onError(status: Status) {
+            Log.e(TAG, "An error occurred: " + status)
+        }
+    }
+
+    private fun searchGarages(latLng: LatLng) {
+        DriverService(activity).searchGarage(
+                latLng.latitude,
+                latLng.longitude,
+                getRadio(seekRadio.progress),
+                { garages -> updateMarker(latLng, garages) }
+        )
+    }
+
+    private val seekBarChangeListener: SeekBar.OnSeekBarChangeListener = object : SeekBar.OnSeekBarChangeListener {
+        override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+            seekBarValue.text = getRadioText(progress)
+            searchGarages(currentPositionEntry!!.key)
+        }
+
+        override fun onStopTrackingTouch(seekBar: SeekBar) {}
+        override fun onStartTrackingTouch(seekBar: SeekBar) {}
+    }
+
+    // ********************
+    // Companion object
+    // ********************
+
     companion object {
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
         private val REQUEST_CODE = 9000
     }
 
+
+    class PositionEntry<out K, out V>(override val key: K,
+                                      override val value: V) : kotlin.collections.Map.Entry<K, V>
+}
+
+private fun Marker.toggleInfoWindow() {
+    if (isInfoWindowShown) {
+        showInfoWindow()
+    } else {
+        hideInfoWindow()
+    }
 }
