@@ -39,7 +39,7 @@ class Search : Fragment() {
     private lateinit var fragment : View
 
     private var circleRadius : Circle? = null
-    private var markers : MutableCollection<Marker> = mutableListOf()
+    private var markers : MutableMap<Marker, Garage?> = mutableMapOf()
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -83,14 +83,18 @@ class Search : Fragment() {
         seekRadio.max = 14
         seekRadio.progress = 9
 
+        seekBarValue.text = getRadioText(seekRadio.progress)
+
         seekRadio.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                seekBarValue.text = "${getRadio(progress)}m"
+                seekBarValue.text = getRadioText(progress)
             }
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
         })
     }
+
+    private fun getRadioText(progress: Int) = "${getRadio(progress)}m"
 
     fun getRadio(progress : Int): Int {
         return (progress + 1) * 100
@@ -135,7 +139,8 @@ class Search : Fragment() {
     }
 
     private fun addCenterMarker(latLng: LatLng) {
-        markers.add(googleMap.addMarker(MarkerOptions().position(latLng)))
+        val marker = googleMap.addMarker(MarkerOptions().position(latLng))
+        markers.put(marker, null)
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, getZoomLevel(circleRadius!!)))
     }
@@ -149,14 +154,17 @@ class Search : Fragment() {
     private fun createGarageMarkers(garages: List<Garage>) {
         garages.forEach { garage ->
             val location = garage.latLng()
-            val markerOption = MarkerOptions().position(location).title(garage.name).icon(getBitmapDescriptor())
+            val markerOption = MarkerOptions()
+                    .position(location)
+                    .title(garage.name)
+                    .icon(getBitmapDescriptor())
             val marker = googleMap.addMarker(markerOption)
-            markers.add(marker)
+            markers.put(marker, garage)
         }
     }
 
     private fun clearMarkers() {
-        markers.forEach { it.remove() }
+        markers.forEach { it.key.remove() }
         markers.clear()
     }
 
@@ -169,19 +177,35 @@ class Search : Fragment() {
                 .center(latLng)
                 .radius(meters)
                 .strokeWidth(5f)
-                .fillColor(color.and(0x00FFFFFF).or(0x25000000))
+                .fillColor(withOpacity(color))
                 .strokeColor(color)
         circleRadius = googleMap.addCircle(options)
     }
 
+    private fun withOpacity(color: Int) = color.and(0x00FFFFFF).or(0x25000000)
+
     private fun getBitmapDescriptor(): BitmapDescriptor {
-        return BitmapDescriptorFactory.fromResource(R.drawable.ic_account_box_black_24dp)
+        return BitmapDescriptorFactory.fromResource(R.mipmap.ic_cone)
     }
 
     private fun onMapReadyCallback(map: GoogleMap) {
         googleMap = map
         googleMap.uiSettings.isCompassEnabled = true
         googleMap.uiSettings.isZoomControlsEnabled = true
+        googleMap.setOnMarkerClickListener { showMarkerInfo(it) }
+    }
+
+    private fun showMarkerInfo(marker: Marker?): Boolean {
+        markers.keys.forEach { it.hideInfoWindow() }
+        val garage = markers.getOrDefault(marker!!, null)
+        if (garage != null) {
+            if (marker.isInfoWindowShown) {
+                marker.showInfoWindow()
+            } else {
+                marker.hideInfoWindow()
+            }
+        }
+        return false
     }
 
 //    private val listener = object : LocationListener {
