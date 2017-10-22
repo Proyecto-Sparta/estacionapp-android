@@ -1,9 +1,16 @@
 package com.sparta.estacionapp.fragments
 
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
@@ -68,13 +75,13 @@ class Search : Fragment() {
         return fragment
     }
 
-    private fun requestGarage() {
+//    private fun requestGarage() {
 //        val socket = Socket("ws://localhost:4000/socket")
 //        socket.connect()
 //
-//        val channel = socket.chan("garage:sarasa", null)
+//        val channel = socket.chan("garage:foo", null)
 //        channel.join()
-    }
+//    }
 
     private fun initSeekBarRadio(fragment: View) {
         seekBarValue = fragment.findViewById(R.id.txt_radio)
@@ -100,7 +107,7 @@ class Search : Fragment() {
         return (progress + 1) * 100
     }
 
-    fun initPlaceAutocompleteFragment() {
+    private fun initPlaceAutocompleteFragment() {
         placeAutocompleteFragment = childFragmentManager.findFragmentById(R.id.search_fragment) as SupportPlaceAutocompleteFragment
         placeAutocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
@@ -113,7 +120,7 @@ class Search : Fragment() {
             }
 
             override fun onError(status: Status) {
-                Log.i(TAG, "An error occurred: " + status)
+                Log.e(TAG, "An error occurred: " + status)
             }
         })
     }
@@ -124,14 +131,23 @@ class Search : Fragment() {
     }
 
     private fun setupMap() {
-//        requestLocationPermission()
-        mapView = fragment.findViewById<MapView>(R.id.map_view)
+        mapView = fragment.findViewById(R.id.map_view)
         mapView.onCreate(Bundle())
         mapView.onStart()
         mapView.getMapAsync { this.onMapReadyCallback(it) }
     }
 
-    private fun updateMarker(latLng: LatLng, garages : List<Garage>) {
+    private fun requestLocationPermission() {
+        val locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return ActivityCompat.requestPermissions(activity, Search.REQUIRED_PERMISSIONS, Search.REQUEST_CODE)
+        }
+        locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, listener, null)
+    }
+
+
+
+    private fun updateMarker(latLng: LatLng, garages : List<Garage> = listOf()) {
         clearMarkers()
         createCircle(latLng)
         addCenterMarker(latLng)
@@ -193,6 +209,7 @@ class Search : Fragment() {
         googleMap.uiSettings.isCompassEnabled = true
         googleMap.uiSettings.isZoomControlsEnabled = true
         googleMap.setOnMarkerClickListener { showMarkerInfo(it) }
+        requestLocationPermission()
     }
 
     private fun showMarkerInfo(marker: Marker?): Boolean {
@@ -208,19 +225,19 @@ class Search : Fragment() {
         return false
     }
 
-//    private val listener = object : LocationListener {
-//        override fun onLocationChanged(location: Location) {
-//            updateMarker(LatLng(location.latitude, location.longitude))
-//        }
-//
-//        override fun onStatusChanged(s: String, i: Int, bundle: Bundle) {}
-//        override fun onProviderEnabled(s: String) {}
-//        override fun onProviderDisabled(s: String) {}
-//    }
-//
-//    companion object {
-//        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
-//        private val REQUEST_CODE = 9000
-//    }
+    private val listener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            updateMarker(LatLng(location.latitude, location.longitude))
+        }
+
+        override fun onProviderDisabled(p0: String?) {}
+        override fun onProviderEnabled(p0: String?) {}
+        override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {}
+    }
+
+    companion object {
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        private val REQUEST_CODE = 9000
+    }
 
 }
