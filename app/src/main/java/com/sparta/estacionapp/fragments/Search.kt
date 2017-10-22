@@ -1,6 +1,7 @@
 package com.sparta.estacionapp.fragments
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.pm.PackageManager
@@ -47,6 +48,10 @@ class Search : Fragment() {
     private lateinit var garageName : TextView
     private lateinit var garageEmail : TextView
 
+    private lateinit var pricingCar: TextView
+    private lateinit var pricingBike: TextView
+    private lateinit var pricingPickUp: TextView
+
     private var currentPositionEntry: PositionEntry<LatLng, Marker>? = null
     private var circleRadius : Circle? = null
     private var markers : MutableMap<Marker, Garage> = mutableMapOf()
@@ -70,6 +75,10 @@ class Search : Fragment() {
         slidingView = fragment.findViewById(R.id.sliding_layout)
         garageName = fragment.findViewById(R.id.garage_name)
         garageEmail = fragment.findViewById(R.id.garage_email)
+
+        pricingCar = fragment.findViewById(R.id.pricing_car)
+        pricingBike = fragment.findViewById(R.id.pricing_bike)
+        pricingPickUp = fragment.findViewById(R.id.pricing_pickup)
 
         slidingView.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
     }
@@ -194,6 +203,9 @@ class Search : Fragment() {
         slidingView.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
         garage_name.text = garage.name
         garage_email.text = garage.email
+        pricingBike.text = garage.pricing!!.bike.toString()
+        pricingCar.text = garage.pricing.car.toString()
+        pricingPickUp.text = garage.pricing.pickup.toString()
         return true
     }
 
