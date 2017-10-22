@@ -1,24 +1,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:visibility="visible"
     tools:context=".fragments.Search">
 
     <fragment
         android:id="@+id/search_fragment"
+        android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_vertical_margin"
-        android:layout_marginEnd="90dp"
-        android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment" />
+        android:layout_height="wrap_content" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="visible">
 
         <SeekBar
             android:id="@+id/seek_radio"
@@ -30,21 +28,19 @@
             android:max="1500" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/txt_radio"
+            android:layout_width="45dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:textAlignment="textEnd"
-            android:text="1000m"
-            android:id="@+id/txt_radio" />
-
+            android:textAlignment="textEnd" />
 
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/garage_search_results"
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/map_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:context="com.sparta.estacionapp.activities.Home" />
 
 </LinearLayout>
 

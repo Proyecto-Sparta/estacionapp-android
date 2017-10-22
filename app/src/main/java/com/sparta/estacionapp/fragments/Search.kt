@@ -1,11 +1,10 @@
 package com.sparta.estacionapp.fragments
 
 
+import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,9 +15,13 @@ import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.places.Place
 import com.google.android.gms.location.places.ui.PlaceSelectionListener
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.*
 import com.sparta.estacionapp.R
+import com.sparta.estacionapp.models.Garage
 import com.sparta.estacionapp.rest.DriverService
-import com.sparta.estacionapp.ui.adapters.RecyclerViewGarageAdapter
 
 
 /**
@@ -26,19 +29,22 @@ import com.sparta.estacionapp.ui.adapters.RecyclerViewGarageAdapter
  */
 class Search : Fragment() {
 
-    private lateinit var garageSearchResultsView: RecyclerView
+    private lateinit var mapView: MapView
+    private lateinit var googleMap: GoogleMap
 
     private lateinit var seekRadio: SeekBar
     private lateinit var seekBarValue : TextView
+
     private lateinit var placeAutocompleteFragment: SupportPlaceAutocompleteFragment
+    private lateinit var fragment : View
+
+    private var circleRadius : Circle? = null
+    private var markers : MutableCollection<Marker> = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val fragment = inflater!!.inflate(R.layout.fragment_search, container, false)
-
-        garageSearchResultsView = fragment.findViewById(R.id.garage_search_results)
-        garageSearchResultsView.layoutManager = LinearLayoutManager(activity.applicationContext)
+        fragment = inflater!!.inflate(R.layout.fragment_search, container, false)
 
         initSeekBarRadio(fragment)
         initPlaceAutocompleteFragment()
@@ -98,7 +104,7 @@ class Search : Fragment() {
                         place.latLng.latitude,
                         place.latLng.longitude,
                         getRadio(seekRadio.progress),
-                        { garages -> garageSearchResultsView.adapter = RecyclerViewGarageAdapter(garages) }
+                        { garages -> updateMarker(place.latLng, garages) }
                 )
             }
 
@@ -107,5 +113,90 @@ class Search : Fragment() {
             }
         })
     }
+
+    override fun onStart() {
+        super.onStart()
+        setupMap()
+    }
+
+    private fun setupMap() {
+//        requestLocationPermission()
+        mapView = fragment.findViewById<MapView>(R.id.map_view)
+        mapView.onCreate(Bundle())
+        mapView.onStart()
+        mapView.getMapAsync { this.onMapReadyCallback(it) }
+    }
+
+    private fun updateMarker(latLng: LatLng, garages : List<Garage>) {
+        clearMarkers()
+        createCircle(latLng)
+        addCenterMarker(latLng)
+        createGarageMarkers(garages)
+    }
+
+    private fun addCenterMarker(latLng: LatLng) {
+        markers.add(googleMap.addMarker(MarkerOptions().position(latLng)))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, getZoomLevel(circleRadius!!)))
+    }
+
+    private fun getZoomLevel(circle: Circle): Float {
+        val radius = circle.radius + circle.radius / 2
+        val scale = radius / 500
+        return (16 - Math.log(scale) / Math.log(2.0)).toFloat()
+    }
+
+    private fun createGarageMarkers(garages: List<Garage>) {
+        garages.forEach { garage ->
+            val location = garage.latLng()
+            val markerOption = MarkerOptions().position(location).title(garage.name).icon(getBitmapDescriptor())
+            val marker = googleMap.addMarker(markerOption)
+            markers.add(marker)
+        }
+    }
+
+    private fun clearMarkers() {
+        markers.forEach { it.remove() }
+        markers.clear()
+    }
+
+    @SuppressLint("NewApi")
+    private fun createCircle(latLng : LatLng) {
+        if (circleRadius != null) circleRadius!!.remove()
+        val color = resources.getColor(R.color.colorAccent, activity.theme)
+        val meters = getRadio(seekRadio.progress).toDouble()
+        val options = CircleOptions()
+                .center(latLng)
+                .radius(meters)
+                .strokeWidth(5f)
+                .fillColor(color.and(0x00FFFFFF).or(0x25000000))
+                .strokeColor(color)
+        circleRadius = googleMap.addCircle(options)
+    }
+
+    private fun getBitmapDescriptor(): BitmapDescriptor {
+        return BitmapDescriptorFactory.fromResource(R.drawable.ic_account_box_black_24dp)
+    }
+
+    private fun onMapReadyCallback(map: GoogleMap) {
+        googleMap = map
+        googleMap.uiSettings.isCompassEnabled = true
+        googleMap.uiSettings.isZoomControlsEnabled = true
+    }
+
+//    private val listener = object : LocationListener {
+//        override fun onLocationChanged(location: Location) {
+//            updateMarker(LatLng(location.latitude, location.longitude))
+//        }
+//
+//        override fun onStatusChanged(s: String, i: Int, bundle: Bundle) {}
+//        override fun onProviderEnabled(s: String) {}
+//        override fun onProviderDisabled(s: String) {}
+//    }
+//
+//    companion object {
+//        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+//        private val REQUEST_CODE = 9000
+//    }
 
 }

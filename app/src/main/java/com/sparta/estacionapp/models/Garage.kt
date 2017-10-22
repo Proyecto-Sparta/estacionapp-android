@@ -3,6 +3,7 @@ package com.sparta.estacionapp.models
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
+import com.google.android.gms.maps.model.LatLng
 import com.sparta.estacionapp.R
 
 class Garage(
@@ -24,5 +25,7 @@ class Garage(
     data class Pricing (val bike: Double?, val car: Double?, val pickup: Double?, val id: String?)
 
     data class SearchResponse (val garages: List<Garage>)
+
+    fun latLng(): LatLng = LatLng(location!![1], location[0])
 
 }
