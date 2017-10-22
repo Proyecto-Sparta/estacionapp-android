@@ -43,7 +43,7 @@ class Search : Fragment() {
 
     private var currentPositionEntry: PositionEntry<LatLng, Marker>? = null
     private var circleRadius : Circle? = null
-    private var markers : MutableMap<Marker, Garage?> = mutableMapOf()
+    private var markers : MutableMap<Marker, Garage> = mutableMapOf()
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -165,14 +165,18 @@ class Search : Fragment() {
         googleMap = map
         googleMap.uiSettings.isCompassEnabled = true
         googleMap.uiSettings.isZoomControlsEnabled = true
-        googleMap.setOnMarkerClickListener { showMarkerInfo(it) }
+        googleMap.setOnMarkerClickListener { openGarageDetails(it) }
         googleMap.setOnMapLoadedCallback { requestLocationPermission() }
     }
 
-    private fun showMarkerInfo(marker: Marker?): Boolean {
-        markers.keys.forEach { it.hideInfoWindow() }
-        val garage = markers.getOrDefault(marker!!, null)
-        if (garage != null) marker.toggleInfoWindow()
+    private fun openGarageDetails(marker: Marker?): Boolean {
+        if (marker == null) return true
+//        markers.keys.forEach { it.hideInfoWindow() }
+//        val garage = markers.getOrDefault(marker!!, Garage.stub())
+//        marker.toggleInfoWindow()
+//        val intent = Intent(context, GarageDetailsActivity::class.java)
+//        intent.putExtra("GARAGE", garage)
+//        startActivity(intent)
         return false
     }
 
@@ -233,16 +237,4 @@ class Search : Fragment() {
 
     class PositionEntry<out K, out V>(override val key: K,
                                       override val value: V) : kotlin.collections.Map.Entry<K, V>
-}
-
-// ********************
-// Useful Extensions
-// ********************
-
-private fun Marker.toggleInfoWindow() {
-    if (isInfoWindowShown) {
-        showInfoWindow()
-    } else {
-        hideInfoWindow()
-    }
 }
