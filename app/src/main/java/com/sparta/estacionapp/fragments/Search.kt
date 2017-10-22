@@ -53,32 +53,8 @@ class Search : Fragment() {
         initSeekBarRadio(fragment)
         initPlaceAutocompleteFragment()
 
-//        val database = FirebaseDatabase.getInstance()
-//        val myRef = database.getReference("message")
-//        myRef.addListenerForSingleValueEvent(object : ValueEventListener{
-//            override fun onCancelled(p0: DatabaseError?) {
-//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//            }
-//
-//            override fun onDataChange(p0: DataSnapshot?) {
-//               var a = p0!!.getValue(String::class.java)
-//            }
-//
-//        })
-//
-//        myRef.setValue("Hello, World!")
-
-        //search.setOnClickListener { _ -> requestGarage() }
         return fragment
     }
-
-//    private fun requestGarage() {
-//        val socket = Socket("ws://localhost:4000/socket")
-//        socket.connect()
-//
-//        val channel = socket.chan("garage:foo", null)
-//        channel.join()
-//    }
 
     private fun initSeekBarRadio(fragment: View) {
         seekRadio = fragment.findViewById(R.id.seek_radio)
@@ -90,11 +66,8 @@ class Search : Fragment() {
         seekBarValue.text = getRadioText(seekRadio.progress)
     }
 
+    private fun getRadio(progress : Int) = (progress + 1) * 100
     private fun getRadioText(progress: Int) = "${getRadio(progress)}m"
-
-    private fun getRadio(progress : Int): Int {
-        return (progress + 1) * 100
-    }
 
     private fun initPlaceAutocompleteFragment() {
         placeAutocompleteFragment = childFragmentManager.findFragmentById(R.id.search_fragment) as SupportPlaceAutocompleteFragment
@@ -263,6 +236,10 @@ class Search : Fragment() {
     class PositionEntry<out K, out V>(override val key: K,
                                       override val value: V) : kotlin.collections.Map.Entry<K, V>
 }
+
+// ********************
+// Useful Extensions
+// ********************
 
 private fun Marker.toggleInfoWindow() {
     if (isInfoWindowShown) {
