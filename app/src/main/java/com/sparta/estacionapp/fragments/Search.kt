@@ -1,7 +1,6 @@
 package com.sparta.estacionapp.fragments
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.pm.PackageManager
@@ -17,6 +16,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.SeekBar
 import android.widget.TextView
 import com.google.android.gms.common.api.Status
@@ -29,9 +29,9 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.*
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.sparta.estacionapp.R
+import com.sparta.estacionapp.models.Driver
 import com.sparta.estacionapp.models.Garage
 import com.sparta.estacionapp.rest.DriverService
-import kotlinx.android.synthetic.main.fragment_search.*
 
 class Search : Fragment() {
 
@@ -43,6 +43,8 @@ class Search : Fragment() {
 
     private lateinit var placeAutocompleteFragment: SupportPlaceAutocompleteFragment
     private lateinit var fragment : View
+
+    private lateinit var reserve : Button
 
     private lateinit var slidingView: SlidingUpPanelLayout
     private lateinit var garageName : TextView
@@ -56,10 +58,15 @@ class Search : Fragment() {
     private var circleRadius : Circle? = null
     private var markers : MutableMap<Marker, Garage> = mutableMapOf()
 
+    private lateinit var selectedGarage : Garage
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         fragment = inflater!!.inflate(R.layout.fragment_search, container, false)
+
+        reserve = fragment.findViewById(R.id.btn_reserve)
+        reserve.setOnClickListener { DriverService.reserveGarage(selectedGarage, Driver.current()) }
 
         initGarageDetails(fragment)
         initSeekBarRadio(fragment)
@@ -199,13 +206,13 @@ class Search : Fragment() {
             slidingView.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
             return false
         }
-        val garage = markers.getOrDefault(marker!!, Garage.stub())
+        selectedGarage = markers.getOrDefault(marker!!, Garage.stub())
         slidingView.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
-        garage_name.text = garage.name
-        garage_email.text = garage.email
-        pricingBike.text = garage.pricing!!.bike.toString()
-        pricingCar.text = garage.pricing.car.toString()
-        pricingPickUp.text = garage.pricing.pickup.toString()
+        garageName.text = selectedGarage.name
+        garageEmail.text = selectedGarage.email
+        pricingBike.text = selectedGarage.pricing!!.bike.toString()
+        pricingCar.text = selectedGarage.pricing!!.car.toString()
+        pricingPickUp.text = selectedGarage.pricing!!.pickup.toString()
         return true
     }
 

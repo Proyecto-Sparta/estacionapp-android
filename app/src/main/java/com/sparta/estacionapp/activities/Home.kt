@@ -2,6 +2,7 @@ package com.sparta.estacionapp.activities
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -15,6 +16,7 @@ import android.view.MenuItem
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.fragments.InnerMap
 import com.sparta.estacionapp.fragments.Search
+import com.sparta.estacionapp.models.Driver
 import com.sparta.estacionapp.rest.DriverService
 import kotterknife.bindView
 
@@ -84,7 +86,9 @@ class Home : AppCompatActivity() {
     }
 
     private fun logOut() {
-        removeJWT()
+        val preferences = getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE)
+        removeSharedPreferences(preferences)
+        Driver.logout(preferences)
         goToLoginActivity()
     }
 
@@ -94,11 +98,8 @@ class Home : AppCompatActivity() {
         finish()
     }
 
-    private fun removeJWT() {
-        getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE)
-                .edit()
-                .remove("jwt")
-                .apply()
+    private fun removeSharedPreferences(preferences : SharedPreferences) {
+        preferences.edit().remove("jwt").apply()
     }
 
     private fun loadFragment(fragment: Fragment) {

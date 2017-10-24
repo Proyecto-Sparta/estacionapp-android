@@ -1,9 +1,9 @@
 package com.sparta.estacionapp.rest
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.util.Log
+import com.google.firebase.database.FirebaseDatabase
 import com.sparta.estacionapp.R
+import com.sparta.estacionapp.models.Driver
 import com.sparta.estacionapp.models.Garage
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -11,7 +11,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
-import java.util.function.Consumer
 
 
 class DriverService(val context: Context) {
@@ -23,11 +22,11 @@ class DriverService(val context: Context) {
             .build()
             .create(DriverService::class.java)
 
-    fun login(digest: String, onSuccess: (String) -> Unit, onError: (Throwable) -> Unit) {
-        api.login(digest).enqueue({ _, response ->
+    fun login(digest: String, onSuccess: (Driver, String) -> Unit, onError: (Throwable) -> Unit) {
+        api.login(digest).enqueue({ driver, response ->
             val jsonWebToken = response.headers().get(context.getString(R.string.authorizationRequestHeader))!!
             jwt = jsonWebToken
-            onSuccess.invoke(jwt)
+            onSuccess.invoke(driver, jwt)
         }, { error -> onError.invoke(error) })
 
     }
@@ -38,16 +37,10 @@ class DriverService(val context: Context) {
         })
     }
 
-    class LoginResponse(val status: String, var jwt: String) {
-        override fun toString(): String {
-            return "LoginResponse(status='$status', jwt='$jwt')"
-        }
-    }
-
     interface DriverService {
 
         @GET("/api/drivers/login")
-        fun login(@Header("Authorization") loginDigest: String): Call<LoginResponse>
+        fun login(@Header("Authorization") loginDigest: String): Call<Driver>
 
         @GET("/api/garages/search")
         fun searchGarage(@Header("Authorization") loginDigest: String,
@@ -57,6 +50,16 @@ class DriverService(val context: Context) {
     }
 
     companion object {
+
         lateinit var jwt : String
+
+        private val firebase : FirebaseDatabase = FirebaseDatabase.getInstance()
+
+        fun reserveGarage(garage: Garage, driver: Driver) {
+            firebase.getReference("garages")
+                    .child(garage.id.toString())
+                    .child(driver.id.toString())
+                    .setValue(driver)
+        }
     }
 }

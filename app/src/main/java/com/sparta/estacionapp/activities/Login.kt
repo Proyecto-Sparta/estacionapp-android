@@ -14,6 +14,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.TextView
 import com.sparta.estacionapp.R
+import com.sparta.estacionapp.models.Driver
 import com.sparta.estacionapp.rest.DriverService
 import kotlinx.android.synthetic.main.activity_login.*
 import kotterknife.bindView
@@ -54,6 +55,11 @@ class Login : AppCompatActivity() {
                 .edit()
                 .putString("jwt", token)
                 .apply()
+    }
+
+    private fun saveDriver(driver: Driver) {
+        val edit = getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE)
+        Driver.login(driver, edit!!)
     }
 
     private fun logIn() {
@@ -103,8 +109,9 @@ class Login : AppCompatActivity() {
             // perform the user login attempt.
             showProgress(true)
             val loginDigest = "Basic Q2hyaXMgTWNDb3JkOnBhc3N3b3Jk"
-            DriverService(this).login(loginDigest, { token ->
+            DriverService(this).login(loginDigest, { driver, token ->
                 saveToken(token)
+                saveDriver(driver)
                 logIn()
             }, { _ -> showProgress(false) })
         }
