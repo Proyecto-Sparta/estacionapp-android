@@ -28,6 +28,7 @@ class Login : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (loggedIn()) {
+            Driver.setCurrentFrom(sharedPreferences()!!)
             logIn()
         }
 
@@ -47,20 +48,22 @@ class Login : AppCompatActivity() {
     }
 
     private fun loggedIn(): Boolean {
-        return getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE).contains("jwt")
+        return sharedPreferences().contains("jwt")
     }
 
     private fun saveToken(token: String) {
-        getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE)
+        sharedPreferences()
                 .edit()
                 .putString("jwt", token)
                 .apply()
     }
 
     private fun saveDriver(driver: Driver) {
-        val edit = getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE)
-        Driver.login(driver, edit!!)
+        Driver.login(driver, sharedPreferences()!!)
     }
+
+    private fun sharedPreferences() =
+            getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE)
 
     private fun logIn() {
         val intent = Intent(this, Home::class.java)

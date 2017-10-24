@@ -40,6 +40,15 @@ class Driver(
                     .apply()
             current = driver
         }
+
+        fun setCurrentFrom(preferences: SharedPreferences) {
+            val id = preferences.getInt("DriverId", 0)
+            val name = preferences.getString("DriverName", "Juan Perez")
+            val email = preferences.getString("DriverEmail", "juanperez@gmail.com")
+            val type = preferences.getString("DriverVehicleType", "car")
+            val plate = preferences.getString("DriverVehiclePlate", "ABC 123")
+            current = Driver(name, email, id, Vehicle(plate, type))
+        }
     }
 
 }
