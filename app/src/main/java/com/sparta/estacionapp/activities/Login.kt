@@ -5,19 +5,17 @@ import android.animation.AnimatorListenerAdapter
 import android.annotation.TargetApi
 import android.content.Context
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.TextView
-
 import com.sparta.estacionapp.R
+import com.sparta.estacionapp.models.Driver
 import com.sparta.estacionapp.rest.DriverService
-
 import kotlinx.android.synthetic.main.activity_login.*
 import kotterknife.bindView
 
@@ -30,6 +28,7 @@ class Login : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (loggedIn()) {
+            Driver.setCurrentFrom(sharedPreferences()!!)
             logIn()
         }
 
@@ -49,15 +48,22 @@ class Login : AppCompatActivity() {
     }
 
     private fun loggedIn(): Boolean {
-        return getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE).contains("jwt")
+        return sharedPreferences().contains("jwt")
     }
 
     private fun saveToken(token: String) {
-        getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE)
+        sharedPreferences()
                 .edit()
                 .putString("jwt", token)
-                .commit()
+                .apply()
     }
+
+    private fun saveDriver(driver: Driver) {
+        Driver.login(driver, sharedPreferences()!!)
+    }
+
+    private fun sharedPreferences() =
+            getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE)
 
     private fun logIn() {
         val intent = Intent(this, Home::class.java)
@@ -106,8 +112,9 @@ class Login : AppCompatActivity() {
             // perform the user login attempt.
             showProgress(true)
             val loginDigest = "Basic Q2hyaXMgTWNDb3JkOnBhc3N3b3Jk"
-            DriverService(this).login(loginDigest, { token ->
+            DriverService(this).login(loginDigest, { driver, token ->
                 saveToken(token)
+                saveDriver(driver)
                 logIn()
             }, { _ -> showProgress(false) })
         }

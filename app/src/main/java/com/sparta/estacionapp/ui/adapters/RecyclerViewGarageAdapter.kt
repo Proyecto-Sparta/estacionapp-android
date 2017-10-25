@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.models.Garage
 
-class RecyclerViewGarageAdapter(var garages: MutableList<Garage>) : RecyclerView.Adapter<Garage.ViewHolder>() {
+class RecyclerViewGarageAdapter(var garages: List<Garage>) : RecyclerView.Adapter<Garage.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): Garage.ViewHolder {
         val view: View = LayoutInflater.from(parent!!.context).inflate(R.layout.garage_search_card, parent, false)

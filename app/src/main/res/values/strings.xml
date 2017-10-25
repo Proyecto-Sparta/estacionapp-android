@@ -18,7 +18,7 @@
 
     <!-- SPECIAL STRINGS-->
     <string name="jwtResponseHeader">authorization</string>
-    <string name="serverAddress">http://10.0.1.5:4000</string>
+    <string name="serverAddress">http://192.168.1.19:4000</string>
     <string name="authorizationRequestHeader">Authorization</string>
     <string name="title_activity_login">Sign in</string>
 
@@ -31,4 +31,7 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
+    <string name="results">Results</string>
+    <string name="search">Search</string>
+    <string name="reserve">Reserve</string>
 </resources>

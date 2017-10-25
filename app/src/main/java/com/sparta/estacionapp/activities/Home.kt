@@ -2,6 +2,7 @@ package com.sparta.estacionapp.activities
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -12,12 +13,11 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
-import android.widget.Toast
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.fragments.InnerMap
-import com.sparta.estacionapp.fragments.Map
-import com.sparta.estacionapp.fragments.Profile
 import com.sparta.estacionapp.fragments.Search
+import com.sparta.estacionapp.models.Driver
+import com.sparta.estacionapp.rest.DriverService
 import kotterknife.bindView
 
 class Home : AppCompatActivity() {
@@ -31,7 +31,9 @@ class Home : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_estacion_app)
 
-       // butterknife.BuildConfig()
+        val jwt = getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE).getString("jwt", "")
+
+        DriverService.jwt = jwt
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -76,7 +78,6 @@ class Home : AppCompatActivity() {
         when (item.itemId) {
             R.id.nav_profile -> loadFragment(InnerMap())
             R.id.nav_search -> loadFragment(Search())
-            R.id.nav_map -> loadFragment(Map())
             R.id.nav_log_out -> logOut()
         }
 
@@ -85,13 +86,20 @@ class Home : AppCompatActivity() {
     }
 
     private fun logOut() {
-        getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE)
-                .edit()
-                .remove("jwt")
-                .commit()
-        val intent = Intent(this, Login::class.java)
+        val preferences = getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE)
+        removeSharedPreferences(preferences)
+        Driver.logout(preferences)
+        goToLoginActivity()
+    }
+
+    private fun goToLoginActivity() {
+        val intent = Intent(applicationContext, Login::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun removeSharedPreferences(preferences : SharedPreferences) {
+        preferences.edit().remove("jwt").apply()
     }
 
     private fun loadFragment(fragment: Fragment) {
