@@ -35,4 +35,10 @@
     <string name="search">Buscar</string>
     <string name="reserve">Reservar</string>
     <string name="currency">$%s/h</string>
+    <string name="techado">Techado</string>
+    <string name="drive_your_car">Manejan</string>
+    <string name="todo_el_dia">Todo el dia</string>
+    <string name="inflan_ruedas">Aire</string>
+    <string name="lavadero">Lavadero</string>
+    <string name="dejar_llaves">Dejar llaves</string>
 </resources>
