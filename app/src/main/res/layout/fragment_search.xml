@@ -157,7 +157,7 @@
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="75dp"
-                            android:src="@drawable/ic_directions_bike_black_24dp" />
+                            android:src="@mipmap/ic_moto" />
 
                         <TextView
                             android:id="@+id/pricing_bike"
