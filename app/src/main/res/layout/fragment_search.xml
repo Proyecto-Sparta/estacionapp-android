@@ -347,12 +347,28 @@
                         android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
+                        android:layout_gravity="center"
                         android:orientation="vertical">
 
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="75dp"
-                            app:srcCompat="@mipmap/ic_manejan" />
+
+                        <FrameLayout
+                            android:layout_margin="0dp"
+                            android:padding="0dp"
+                            android:layout_width="75dp"
+                            android:layout_height="75dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                app:srcCompat="@mipmap/ic_manejan" />
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="right|bottom"
+                                android:src="@mipmap/ic_yes"/>
+
+                        </FrameLayout>
 
                         <TextView
                             android:layout_width="match_parent"
