@@ -210,9 +210,9 @@ class Search : Fragment() {
         slidingView.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
         garageName.text = selectedGarage.name
         garageEmail.text = selectedGarage.email
-        pricingBike.text = selectedGarage.pricing!!.bike.toString()
-        pricingCar.text = selectedGarage.pricing!!.car.toString()
-        pricingPickUp.text = selectedGarage.pricing!!.pickup.toString()
+        pricingBike.text = resources.getString(R.string.currency, selectedGarage.pricing!!.bike.toString())
+        pricingCar.text = resources.getString(R.string.currency, selectedGarage.pricing!!.car.toString())
+        pricingPickUp.text = resources.getString(R.string.currency, selectedGarage.pricing!!.pickup.toString())
         return true
     }
 
