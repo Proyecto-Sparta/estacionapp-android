@@ -232,7 +232,7 @@
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="75dp"
-                            app:srcCompat="@drawable/ic_menu_gallery" />
+                            app:srcCompat="@mipmap/ic_llaves" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -256,7 +256,7 @@
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="75dp"
-                            app:srcCompat="@drawable/ic_menu_gallery" />
+                            app:srcCompat="@mipmap/ic_lavado" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -280,7 +280,7 @@
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="75dp"
-                            app:srcCompat="@drawable/ic_menu_gallery" />
+                            app:srcCompat="@mipmap/ic_inflador" />
 
                         <TextView
                             android:layout_width="match_parent"
