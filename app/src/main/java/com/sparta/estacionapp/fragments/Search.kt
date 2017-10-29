@@ -235,7 +235,15 @@ class Search : Fragment() {
         pricingCar.text = resources.getString(R.string.currency, selectedGarage.pricing!!.car.toString())
         pricingPickUp.text = resources.getString(R.string.currency, selectedGarage.pricing!!.pickup.toString())
 
-
+        motoEnable.setImageResource(getEnableImage(selectedGarage, "moto"))
+        autoEnable.setImageResource(getEnableImage(selectedGarage, "auto"))
+        camionetaEnable.setImageResource(getEnableImage(selectedGarage, "camioneta"))
+        llavesEnable.setImageResource(getEnableImage(selectedGarage, "llaves"))
+        lavadoEnable.setImageResource(getEnableImage(selectedGarage, "lavado"))
+        infladorEnable.setImageResource(getEnableImage(selectedGarage, "inflador"))
+        hours_24Enable.setImageResource(getEnableImage(selectedGarage, "hours_24"))
+        techadoEnable.setImageResource(getEnableImage(selectedGarage, "techado"))
+        manejanEnable.setImageResource(getEnableImage(selectedGarage, "manejan"))
 
         return true
     }
