@@ -15,11 +15,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">OpenGL</string>
     <string name="nav_map">Estacionamiento</string>
-
-    <!-- SPECIAL STRINGS-->
-    <string name="jwtResponseHeader">authorization</string>
-    <string name="serverAddress">http://192.168.1.19:4000</string>
-    <string name="authorizationRequestHeader">Authorization</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
