@@ -143,7 +143,6 @@
                     android:layout_height="wrap_content"
                     android:columnCount="3" >
 
-
                     <LinearLayout
                         android:layout_marginBottom="8dp"
                         android:layout_marginEnd="8dp"
@@ -153,90 +152,33 @@
                         android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
+                        android:layout_gravity="center"
                         android:orientation="vertical">
 
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="75dp"
-                            app:srcCompat="@drawable/ic_menu_gallery" />
+                        <FrameLayout
+                            android:layout_margin="0dp"
+                            android:padding="0dp"
+                            android:layout_width="75dp"
+                            android:layout_height="75dp">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="TextView"
-                            android:textAlignment="center" />
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="75dp"
+                                android:src="@mipmap/ic_moto" />
 
-                    </LinearLayout>
+                            <ImageView
+                                android:id="@+id/moto_chk"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="right|bottom"
+                                android:src="@mipmap/ic_yes"/>
 
-                    <LinearLayout
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_columnWeight="1"
-                        android:layout_rowWeight="1"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="75dp"
-                            app:srcCompat="@drawable/ic_menu_gallery" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="TextView"
-                            android:textAlignment="center" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_rowWeight="1"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="75dp"
-                            app:srcCompat="@drawable/ic_menu_gallery" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="TextView"
-                            android:textAlignment="center" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:layout_rowWeight="1"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="75dp"
-                            android:src="@drawable/ic_directions_bike_black_24dp" />
+                        </FrameLayout>
 
                         <TextView
                             android:id="@+id/pricing_bike"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="TextView"
                             android:textAlignment="center" />
 
                     </LinearLayout>
@@ -246,22 +188,37 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
                         android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
                         android:orientation="vertical">
 
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="75dp"
-                            android:src="@drawable/ic_directions_car_black_24dp" />
+                        <FrameLayout
+                            android:layout_margin="0dp"
+                            android:padding="0dp"
+                            android:layout_width="75dp"
+                            android:layout_height="75dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="75dp"
+                                android:src="@mipmap/ic_auto" />
+
+                            <ImageView
+                                android:id="@+id/auto_chk"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="right|bottom"
+                                android:src="@mipmap/ic_no"/>
+
+                        </FrameLayout>
 
                         <TextView
                             android:id="@+id/pricing_car"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="TextView"
                             android:textAlignment="center" />
 
                     </LinearLayout>
@@ -271,22 +228,276 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
                         android:layout_rowWeight="1"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="75dp"
-                            android:src="@drawable/ic_directions_bus_black_24dp" />
+                        <FrameLayout
+                            android:layout_margin="0dp"
+                            android:padding="0dp"
+                            android:layout_width="75dp"
+                            android:layout_height="75dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="75dp"
+                                android:src="@mipmap/ic_camioneta" />
+
+                            <ImageView
+                                android:id="@+id/camioneta_chk"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="right|bottom"
+                                android:src="@mipmap/ic_yes"/>
+
+                        </FrameLayout>
 
                         <TextView
                             android:id="@+id/pricing_pickup"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="TextView"
+                            android:textAlignment="center" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_margin="0dp"
+                            android:padding="0dp"
+                            android:layout_width="75dp"
+                            android:layout_height="75dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="75dp"
+                                app:srcCompat="@mipmap/ic_llaves" />
+
+                            <ImageView
+                                android:id="@+id/llaves_chk"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="right|bottom"
+                                android:src="@mipmap/ic_no"/>
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/dejar_llaves"
+                            android:textAlignment="center" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_margin="0dp"
+                            android:padding="0dp"
+                            android:layout_width="75dp"
+                            android:layout_height="75dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="75dp"
+                                app:srcCompat="@mipmap/ic_lavado" />
+
+                            <ImageView
+                                android:id="@+id/lavado_chk"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="right|bottom"
+                                android:src="@mipmap/ic_yes"/>
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lavadero"
+                            android:textAlignment="center" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_margin="0dp"
+                            android:padding="0dp"
+                            android:layout_width="75dp"
+                            android:layout_height="75dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="75dp"
+                                app:srcCompat="@mipmap/ic_inflador" />
+
+                            <ImageView
+                                android:id="@+id/inflador_chk"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="right|bottom"
+                                android:src="@mipmap/ic_no"/>
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/inflan_ruedas"
+                            android:textAlignment="center" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_margin="0dp"
+                            android:padding="0dp"
+                            android:layout_width="75dp"
+                            android:layout_height="75dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="75dp"
+                                app:srcCompat="@mipmap/ic_24_hours" />
+
+                            <ImageView
+                                android:id="@+id/hours_24_chk"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="right|bottom"
+                                android:src="@mipmap/ic_yes"/>
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/todo_el_dia"
+                            android:textAlignment="center" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_margin="0dp"
+                            android:padding="0dp"
+                            android:layout_width="75dp"
+                            android:layout_height="75dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="75dp"
+                                app:srcCompat="@mipmap/ic_techado" />
+
+                            <ImageView
+                                android:id="@+id/techado_chk"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="right|bottom"
+                                android:src="@mipmap/ic_no"/>
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/techado"
+                            android:textAlignment="center" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                        <FrameLayout
+                            android:layout_margin="0dp"
+                            android:padding="0dp"
+                            android:layout_width="75dp"
+                            android:layout_height="75dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                app:srcCompat="@mipmap/ic_manejan" />
+
+                            <ImageView
+                                android:id="@+id/manejan_chk"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="right|bottom"
+                                android:src="@mipmap/ic_yes"/>
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/drive_your_car"
                             android:textAlignment="center" />
 
                     </LinearLayout>

@@ -17,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
 import com.google.android.gms.common.api.Status
@@ -60,6 +61,16 @@ class Search : Fragment() {
 
     private lateinit var selectedGarage : Garage
 
+    private lateinit var motoEnable : ImageView
+    private lateinit var autoEnable : ImageView
+    private lateinit var camionetaEnable : ImageView
+    private lateinit var llavesEnable : ImageView
+    private lateinit var lavadoEnable : ImageView
+    private lateinit var infladorEnable : ImageView
+    private lateinit var hours_24Enable : ImageView
+    private lateinit var techadoEnable : ImageView
+    private lateinit var manejanEnable : ImageView
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
@@ -86,6 +97,16 @@ class Search : Fragment() {
         pricingCar = fragment.findViewById(R.id.pricing_car)
         pricingBike = fragment.findViewById(R.id.pricing_bike)
         pricingPickUp = fragment.findViewById(R.id.pricing_pickup)
+
+        motoEnable = fragment.findViewById(R.id.moto_chk)
+        autoEnable = fragment.findViewById(R.id.auto_chk)
+        camionetaEnable = fragment.findViewById(R.id.camioneta_chk)
+        llavesEnable = fragment.findViewById(R.id.llaves_chk)
+        lavadoEnable = fragment.findViewById(R.id.lavado_chk)
+        infladorEnable = fragment.findViewById(R.id.inflador_chk)
+        hours_24Enable = fragment.findViewById(R.id.hours_24_chk)
+        techadoEnable = fragment.findViewById(R.id.techado_chk)
+        manejanEnable = fragment.findViewById(R.id.manejan_chk)
 
         slidingView.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
     }
@@ -210,10 +231,21 @@ class Search : Fragment() {
         slidingView.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
         garageName.text = selectedGarage.name
         garageEmail.text = selectedGarage.email
-        pricingBike.text = selectedGarage.pricing!!.bike.toString()
-        pricingCar.text = selectedGarage.pricing!!.car.toString()
-        pricingPickUp.text = selectedGarage.pricing!!.pickup.toString()
+        pricingBike.text = resources.getString(R.string.currency, selectedGarage.pricing!!.bike.toString())
+        pricingCar.text = resources.getString(R.string.currency, selectedGarage.pricing!!.car.toString())
+        pricingPickUp.text = resources.getString(R.string.currency, selectedGarage.pricing!!.pickup.toString())
+
+
+
         return true
+    }
+
+    fun getEnableImage(garage: Garage, amenity: String): Int {
+        return if (garage.hasAmenity(amenity)) {
+            R.mipmap.ic_yes
+        } else {
+            R.mipmap.ic_no
+        }
     }
 
     // ********************

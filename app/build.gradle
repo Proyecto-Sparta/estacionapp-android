@@ -27,6 +27,7 @@ android {
 }
 
 ext.googleVersion = "11.4.2"
+ext.androidVersion = "26.1.0"
 
 dependencies {
     implementation "com.google.firebase:firebase-database:$googleVersion"
@@ -35,18 +36,18 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    compile 'com.android.support:appcompat-v7:26.+'
-    compile 'com.android.support:design:26.+'
+    compile "com.android.support:appcompat-v7:$androidVersion"
+    compile "com.android.support:design:$androidVersion"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile "com.google.android.gms:play-services-maps:$googleVersion"
     compile "com.google.android.gms:play-services-places:$googleVersion"
-    compile 'com.android.support:support-v4:26.+'
+    compile "com.android.support:support-v4:$androidVersion"
     testCompile 'junit:junit:4.12'
 
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile "com.squareup.retrofit2:converter-moshi:2.0.0"
 
-    compile 'com.android.support:cardview-v7:26+'
+    compile "com.android.support:cardview-v7:$androidVersion"
     compile 'com.mikhaellopez:circularimageview:3.0.2'
 
     compile 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'

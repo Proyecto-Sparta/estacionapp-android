@@ -13,7 +13,8 @@ class Garage(
         val email: String?,
         val location: List<Double>?,
         val distance: Double?,
-        val pricing: Garage.Pricing?) : Serializable {
+        val pricing: Garage.Pricing?,
+        val amenities : List<String>?) : Serializable {
 
     class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
         private var garageName: TextView = itemView!!.findViewById(R.id.garage_name)
@@ -28,9 +29,16 @@ class Garage(
     data class SearchResponse (val garages: List<Garage>)
 
     fun latLng(): LatLng = LatLng(location!![1], location[0])
+    fun hasAmenity(amenity: String): Boolean {
+        return if (amenities is List<String>) {
+            amenities.contains(amenity)
+        } else {
+            false
+        }
+    }
 
     companion object {
-        fun stub() = Garage("Estacion App", 1, "info@estacionapp.com", null, null, null)
+        fun stub() = Garage("Estacion App", 1, "info@estacionapp.com", null, null, null,  null)
     }
 
 }
