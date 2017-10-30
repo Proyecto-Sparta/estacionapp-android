@@ -1,0 +1,7 @@
+<resources>
+    <string-array name="vehicles_types">
+        <item>Bici</item>
+        <item>Auto</item>
+        <item>Camioneta</item>
+    </string-array>
+</resources>

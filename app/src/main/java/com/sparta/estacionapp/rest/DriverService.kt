@@ -8,9 +8,7 @@ import com.sparta.estacionapp.models.Garage
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Query
+import retrofit2.http.*
 
 
 class DriverService(val context: Context) {
@@ -37,6 +35,12 @@ class DriverService(val context: Context) {
         })
     }
 
+    fun save(driver: Driver, onSuccess: (DriverResponse) -> Unit) {
+        api.save(driver).enqueue({ driverId, _ ->
+            onSuccess.invoke(driverId)
+        })
+    }
+
     interface DriverService {
 
         @GET("/api/drivers/login")
@@ -47,7 +51,13 @@ class DriverService(val context: Context) {
                          @Query("latitude") lat: Double,
                          @Query("longitude") long: Double,
                          @Query("max_distance") maxDistance : Int): Call<Garage.SearchResponse>
+
+        @POST("/api/drivers")
+        fun save(@Body driver: Driver): Call<DriverResponse>
+
     }
+
+    data class DriverResponse(val id : Int)
 
     companion object {
 
@@ -61,5 +71,6 @@ class DriverService(val context: Context) {
                     .child(driver.id.toString())
                     .setValue(driver)
         }
+
     }
 }
