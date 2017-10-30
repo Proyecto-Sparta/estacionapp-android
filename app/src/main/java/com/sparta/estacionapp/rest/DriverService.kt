@@ -1,6 +1,7 @@
 package com.sparta.estacionapp.rest
 
 import android.content.Context
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.models.Driver
@@ -28,7 +29,7 @@ class DriverService(val context: Context) {
 
     }
 
-    fun searchGarage(lat: Double, long: Double, maxDistance : Int, onSuccess: (List<Garage>) -> Unit) {
+    fun searchGarage(lat: Double, long: Double, maxDistance: Int, onSuccess: (List<Garage>) -> Unit) {
         api.searchGarage(jwt, lat, long, maxDistance).enqueue({ searchResponse, _ ->
             onSuccess.invoke(searchResponse.garages)
         })
@@ -59,16 +60,28 @@ class DriverService(val context: Context) {
 
     companion object {
 
-        lateinit var jwt : String
+        lateinit var jwt: String
 
-        private val firebase : FirebaseDatabase = FirebaseDatabase.getInstance()
+        private val firebase: FirebaseDatabase = FirebaseDatabase.getInstance()
+
+        private val garages: DatabaseReference = firebase.getReference("garages")
+        private val drivers: DatabaseReference = firebase.getReference("drivers")
 
         fun reserveGarage(garage: Garage, driver: Driver) {
-            firebase.getReference("garages")
+            garages
                     .child(garage.id.toString())
                     .child(driver.id.toString())
                     .setValue(driver)
         }
 
+        fun reservationResponse(driver: Driver, onResponse: GarageReservationResponse) {
+            drivers
+                    .child(driver.id.toString())
+                    .setValue(false)
+
+            drivers
+                    .child(driver.id.toString())
+                    .childAdded(onResponse)
+        }
     }
 }

@@ -47,6 +47,8 @@ class InnerMap : Fragment() {
         drawLevel(currentLevel)
 
         setActions()
+
+
         return fragment
     }
 
@@ -69,3 +71,12 @@ class InnerMap : Fragment() {
     }
 
 }
+
+
+
+/*
+            val gmmIntentUri = Uri.parse("google.navigation:q=Taronga+Zoo,+Sydney+Australia")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.`package` = "com.google.android.apps.maps"
+            startActivity(mapIntent)
+*/

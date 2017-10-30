@@ -1,6 +1,8 @@
 package com.sparta.estacionapp.fragments
 
 import android.Manifest
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.pm.PackageManager
@@ -16,10 +18,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.SeekBar
-import android.widget.TextView
+import android.view.WindowManager
+import android.widget.*
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.places.Place
 import com.google.android.gms.location.places.ui.PlaceSelectionListener
@@ -32,6 +32,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.models.Driver
 import com.sparta.estacionapp.models.Garage
+import com.sparta.estacionapp.models.MapNavigation
 import com.sparta.estacionapp.rest.DriverService
 
 class Search : Fragment() {
@@ -40,26 +41,31 @@ class Search : Fragment() {
     private lateinit var googleMap: GoogleMap
 
     private lateinit var seekRadio: SeekBar
-    private lateinit var seekBarValue : TextView
+    private lateinit var seekBarValue: TextView
 
     private lateinit var placeAutocompleteFragment: SupportPlaceAutocompleteFragment
-    private lateinit var fragment : View
+    private lateinit var fragment: View
 
-    private lateinit var reserve : Button
+    private lateinit var reserveProgress: ProgressBar
+    private lateinit var reserveLayout: LinearLayout
+
+    private lateinit var garageDetailLayout: LinearLayout
+
+    private lateinit var reserve: Button
 
     private lateinit var slidingView: SlidingUpPanelLayout
-    private lateinit var garageName : TextView
-    private lateinit var garageEmail : TextView
+    private lateinit var garageName: TextView
+    private lateinit var garageEmail: TextView
 
     private lateinit var pricingCar: TextView
     private lateinit var pricingBike: TextView
     private lateinit var pricingPickUp: TextView
 
     private var currentPositionEntry: PositionEntry<LatLng, Marker>? = null
-    private var circleRadius : Circle? = null
-    private var markers : MutableMap<Marker, Garage> = mutableMapOf()
+    private var circleRadius: Circle? = null
+    private var markers: MutableMap<Marker, Garage> = mutableMapOf()
 
-    private lateinit var selectedGarage : Garage
+    private lateinit var selectedGarage: Garage
 
     private lateinit var motoEnable : ImageView
     private lateinit var autoEnable : ImageView
@@ -76,20 +82,39 @@ class Search : Fragment() {
 
         fragment = inflater!!.inflate(R.layout.fragment_search, container, false)
 
-        reserve = fragment.findViewById(R.id.btn_reserve)
-        reserve.setOnClickListener { DriverService.reserveGarage(selectedGarage, Driver.current()) }
-
-        initGarageDetails(fragment)
-        initSeekBarRadio(fragment)
+        initGarageDetails()
+        initSeekBarRadio()
         initPlaceAutocompleteFragment()
+        initReserveFlowViews()
+
+        setupReserveAction()
 
         return fragment
     }
 
-    private fun getRadio(progress : Int) = (progress + 1) * 100
+    private fun initReserveFlowViews() {
+        reserveProgress = fragment.findViewById(R.id.reserve_progress)
+        reserve = fragment.findViewById(R.id.btn_reserve)
+        reserveLayout = fragment.findViewById(R.id.reserve_details)
+
+        garageDetailLayout = fragment.findViewById(R.id.garage_details)
+    }
+
+    private fun setupReserveAction() {
+        reserve.setOnClickListener {
+            DriverService.reserveGarage(selectedGarage, Driver.current())
+            showProgress(true)
+            DriverService.reservationResponse(Driver.current(), {
+                showProgress(false)
+                MapNavigation(activity).navigateTo(selectedGarage)
+            })
+        }
+    }
+
+    private fun getRadio(progress: Int) = (progress + 1) * 100
     private fun getRadioText(progress: Int) = "${getRadio(progress)}m"
 
-    private fun initGarageDetails(fragment: View) {
+    private fun initGarageDetails() {
         slidingView = fragment.findViewById(R.id.sliding_layout)
         garageName = fragment.findViewById(R.id.garage_name)
         garageEmail = fragment.findViewById(R.id.garage_email)
@@ -111,7 +136,7 @@ class Search : Fragment() {
         slidingView.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
     }
 
-    private fun initSeekBarRadio(fragment: View) {
+    private fun initSeekBarRadio() {
         seekRadio = fragment.findViewById(R.id.seek_radio)
         seekRadio.max = 14
         seekRadio.progress = 9
@@ -146,7 +171,7 @@ class Search : Fragment() {
         locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, null)
     }
 
-    private fun updateMarker(latLng: LatLng, garages : List<Garage> = listOf()) {
+    private fun updateMarker(latLng: LatLng, garages: List<Garage> = listOf()) {
         clearMarkers()
         createCircle(latLng)
         addCenterMarker(latLng)
@@ -186,7 +211,7 @@ class Search : Fragment() {
         markers.clear()
     }
 
-    private fun createCircle(latLng : LatLng) {
+    private fun createCircle(latLng: LatLng) {
         if (circleRadius != null) circleRadius!!.remove()
         val color = getColor()
         val meters = getRadio(seekRadio.progress).toDouble()
@@ -202,8 +227,8 @@ class Search : Fragment() {
     private fun getColor(): Int {
         val color = ResourcesCompat.getColor(resources, R.color.colorAccent, activity.theme)
         val r = (color shr 16) and 0xFF
-        val g = (color shr  8) and 0xFF
-        val b = (color shr  0) and 0xFF
+        val g = (color shr 8) and 0xFF
+        val b = (color shr 0) and 0xFF
         return Color.rgb(r, g, b)
     }
 
@@ -253,6 +278,47 @@ class Search : Fragment() {
             R.mipmap.ic_yes
         } else {
             R.mipmap.ic_no
+        }
+    }
+
+    private fun showProgress(show: Boolean) {
+
+        val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
+
+        val reserveVisibility = if (show) View.VISIBLE else View.GONE
+        val garageVisibility = if (show) View.GONE else View.VISIBLE
+
+        garageDetailLayout.visibility = garageVisibility
+        garageDetailLayout.animate()
+                .setDuration(shortAnimTime)
+                .alpha((if (show) 0 else 1).toFloat())
+                .setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        garageDetailLayout.visibility = if (show) View.GONE else View.VISIBLE
+                    }
+                })
+
+        disableUserInteraction(show)
+
+        reserveLayout.visibility = reserveVisibility
+        reserveProgress.visibility = reserveVisibility
+        reserveProgress.animate()
+                .setDuration(shortAnimTime)
+                .alpha((if (show) 1 else 0).toFloat())
+                .setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        reserveProgress.visibility = if (show) View.VISIBLE else View.GONE
+                    }
+                })
+
+    }
+
+    private fun disableUserInteraction(disable: Boolean) {
+        if (disable) {
+            activity.window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        } else {
+            activity.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         }
     }
 
