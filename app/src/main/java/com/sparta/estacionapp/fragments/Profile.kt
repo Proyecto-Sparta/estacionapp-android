@@ -7,10 +7,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
+import android.widget.*
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.models.Driver
 import com.sparta.estacionapp.rest.DriverService
@@ -60,7 +57,10 @@ class Profile : Fragment() {
         driver.email = email.text.toString()
         driver.vehicle = Driver.Vehicle(plate.text.toString(), vehiclesTypes[vehicleType.selectedItemPosition])
 
-        DriverService(context).save(driver) { _ -> Driver.login(driver, preferences) }
+        DriverService(context).save(driver) { _ ->
+            Toast.makeText(context.applicationContext, getString(R.string.driver_updated_toast), Toast.LENGTH_SHORT).show()
+            Driver.login(driver, preferences)
+        }
     }
 
 }

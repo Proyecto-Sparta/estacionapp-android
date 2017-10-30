@@ -41,4 +41,5 @@
     <string name="plate">Patente</string>
     <string name="nav_inner_map">Mapa estacionamiento</string>
     <string name="save">Guardar</string>
+    <string name="driver_updated_toast">Datos actualizados correctamente</string>
 </resources>

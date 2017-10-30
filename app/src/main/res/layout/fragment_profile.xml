@@ -66,19 +66,26 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/profile_layout"
             android:layout_marginTop="5dp"
+            android:gravity="center"
             android:orientation="vertical">
 
             <EditText
                 android:id="@+id/plate_txt"
-                android:layout_width="fill_parent"
-                android:layout_height="75dp"
+                android:layout_width="250dp"
+                android:layout_height="80dp"
                 android:layout_margin="5dp"
-                android:background="#fff"
+                android:background="@drawable/patente"
+                android:textAlignment="center"
                 android:hint="@string/plate"
+                android:textAllCaps="true"
+                android:textSize="40sp"
+                android:textStyle="bold"
                 android:textColorHint="#666666"
                 android:singleLine="true"
                 android:elevation="4dp"
-                android:padding="20dp" />
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="20dp"/>
 
             <Spinner
                 android:id="@+id/vehicle_sp"
@@ -88,7 +95,7 @@
                 android:layout_marginBottom="3dp"
                 android:layout_marginTop="3dp"
                 android:background="#fff"
-                android:hint="@string/plate"
+                android:textAlignment="center"
                 android:textColorHint="#666666"
                 android:elevation="4dp"
                 android:padding="20dp" />
