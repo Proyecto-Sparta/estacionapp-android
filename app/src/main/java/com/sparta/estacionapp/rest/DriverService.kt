@@ -9,7 +9,7 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
-
+import java.io.Serializable
 
 class DriverService(val context: Context) {
 
@@ -35,8 +35,8 @@ class DriverService(val context: Context) {
         })
     }
 
-    fun save(driver: Driver, onSuccess: (DriverResponse) -> Unit) {
-        api.save(driver).enqueue({ driverId, _ ->
+    fun save(driver: Driver, onSuccess: (Driver) -> Unit) {
+        api.save(jwt, driver.id!!, DriverPatch.from(driver)).enqueue({ driverId, _ ->
             onSuccess.invoke(driverId)
         })
     }
@@ -52,12 +52,26 @@ class DriverService(val context: Context) {
                          @Query("longitude") long: Double,
                          @Query("max_distance") maxDistance : Int): Call<Garage.SearchResponse>
 
-        @POST("/api/drivers")
-        fun save(@Body driver: Driver): Call<DriverResponse>
+        @PATCH("/api/drivers/{id}")
+        fun save(@Header("Authorization") loginDigest: String,
+                 @Path("id") id: Int,
+                 @Body driver: DriverPatch): Call<Driver>
 
     }
 
-    data class DriverResponse(val id : Int)
+    class DriverPatch(
+            var full_name: String?,
+            var email: String?,
+            var id: Int?,
+            var vehicle : com.sparta.estacionapp.models.Driver.Vehicle?) : Serializable {
+
+        companion object {
+            fun from(driver : Driver) : DriverPatch {
+                return DriverPatch(driver.name, driver.email, driver.id, driver.vehicle)
+            }
+        }
+
+    }
 
     companion object {
 

@@ -37,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="200dp"
+                android:singleLine="true"
                 android:hint="@string/full_name"
                 android:textAlignment="center"
                 android:textColorHint="#AAAAAA"
@@ -51,6 +52,7 @@
                 android:layout_below="@+id/name_txt"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="12dp"
+                android:singleLine="true"
                 android:textColorHint="#AAAAAA"
                 android:textAlignment="center"
                 android:hint="@string/email"
@@ -74,6 +76,7 @@
                 android:background="#fff"
                 android:hint="@string/plate"
                 android:textColorHint="#666666"
+                android:singleLine="true"
                 android:elevation="4dp"
                 android:padding="20dp" />
 
@@ -94,7 +97,9 @@
                 android:id="@+id/save_driver"
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
+                android:elevation="4dp"
                 android:text="@string/save"/>
+
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>
