@@ -66,6 +66,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/profile_layout"
             android:layout_marginTop="5dp"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -104,6 +106,7 @@
                 android:id="@+id/save_driver"
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
+                android:background="@drawable/button_round"
                 android:elevation="4dp"
                 android:text="@string/save"/>
 
@@ -111,58 +114,3 @@
     </RelativeLayout>
 </ScrollView>
 
-    <!--
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:padding="8dp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".fragments.Profile">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center_vertical"
-            android:src="@mipmap/ic_cone"
-            tools:ignore="ContentDescription" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                tools:ignore="LabelFor" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                tools:ignore="LabelFor" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/activity_horizontal_margin">
-
-        <RadioButton
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
-    </RadioGroup>
-
-</LinearLayout>
--->

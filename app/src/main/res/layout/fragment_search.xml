@@ -505,8 +505,10 @@
                 </GridLayout>
 
                 <Button
+                    android:layout_marginTop="45dp"
                     android:id="@+id/btn_reserve"
                     android:layout_width="match_parent"
+                    android:background="@drawable/button_round"
                     android:layout_height="wrap_content"
                     android:text="@string/reserve" />
 
