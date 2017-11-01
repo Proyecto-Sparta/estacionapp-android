@@ -34,10 +34,10 @@ class Profile : Fragment() {
 
         spinner.adapter = adapter
 
-        name = fragment.findViewById<EditText>(R.id.name_txt)
-        email = fragment.findViewById<EditText>(R.id.email_txt)
-        plate = fragment.findViewById<EditText>(R.id.plate_txt)
-        vehicleType = fragment.findViewById<Spinner>(R.id.vehicle_sp)
+        name = fragment.findViewById(R.id.name_txt)
+        email = fragment.findViewById(R.id.email_txt)
+        plate = fragment.findViewById(R.id.plate_txt)
+        vehicleType = fragment.findViewById(R.id.vehicle_sp)
 
         name.setText(driver.name)
         email.setText(driver.email)
