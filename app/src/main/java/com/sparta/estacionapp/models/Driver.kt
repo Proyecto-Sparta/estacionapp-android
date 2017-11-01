@@ -4,12 +4,12 @@ import android.content.SharedPreferences
 import java.io.Serializable
 
 class Driver(
-        val name: String?,
-        val email: String?,
-        val id: Int?,
-        val vehicle : Vehicle?) : Serializable {
+        var name: String?,
+        var email: String?,
+        var id: Int?,
+        var vehicle : Vehicle?) : Serializable {
 
-    data class Vehicle(val plate : String, val type: String)
+    data class Vehicle(var plate : String, var type: String)
 
     companion object {
         private lateinit var current : Driver
@@ -36,7 +36,7 @@ class Driver(
                     .putString("DriverName", driver.name)
                     .putString("DriverEmail", driver.email)
                     .putString("DriverVehicleType", driver.vehicle!!.type)
-                    .putString("DriverVehiclePlate", driver.vehicle.plate)
+                    .putString("DriverVehiclePlate", driver.vehicle!!.plate)
                     .apply()
             current = driver
         }

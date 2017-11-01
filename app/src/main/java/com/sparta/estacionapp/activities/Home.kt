@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.fragments.InnerMap
+import com.sparta.estacionapp.fragments.Profile
 import com.sparta.estacionapp.fragments.Search
 import com.sparta.estacionapp.models.Driver
 import com.sparta.estacionapp.rest.DriverService
@@ -76,7 +77,8 @@ class Home : AppCompatActivity() {
     private fun onNavigationMenuItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-            R.id.nav_profile -> loadFragment(InnerMap())
+            R.id.nav_inner_map -> loadFragment(InnerMap())
+            R.id.nav_profile -> loadFragment(Profile())
             R.id.nav_search -> loadFragment(Search())
             R.id.nav_log_out -> logOut()
         }

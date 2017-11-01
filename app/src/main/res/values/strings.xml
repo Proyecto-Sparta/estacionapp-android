@@ -36,4 +36,11 @@
     <string name="inflan_ruedas">Aire</string>
     <string name="lavadero">Lavadero</string>
     <string name="dejar_llaves">Dejar llaves</string>
+    <string name="full_name">Nombre y Apellido</string>
+    <string name="email">Correo electrónico</string>
+    <string name="plate">Patente</string>
+    <string name="nav_inner_map">Mapa estacionamiento</string>
+    <string name="save">Guardar</string>
+    <string name="driver_updated_toast">Datos actualizados correctamente</string>
+    <string name="bajada">¡El lugar ya lo tenés!</string>
 </resources>
