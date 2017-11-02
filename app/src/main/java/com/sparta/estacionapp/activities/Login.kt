@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
+import android.util.Base64
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
@@ -111,8 +112,11 @@ class Login : AppCompatActivity() {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true)
-            val loginDigest = "Basic Q2hyaXMgTWNDb3JkOnBhc3N3b3Jk"
-            DriverService(this).login(loginDigest, { driver, token ->
+
+            val toHash : ByteArray = "${emailStr.trim()}:${passwordStr.trim()}".toByteArray()
+            val hashed : String = Base64.encodeToString(toHash, Base64.NO_WRAP).toString()
+            val basicAuth = "Basic $hashed"
+            DriverService(this).login(basicAuth, { driver, token ->
                 saveToken(token)
                 saveDriver(driver)
                 logIn()

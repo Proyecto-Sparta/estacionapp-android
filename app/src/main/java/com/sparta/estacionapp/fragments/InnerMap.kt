@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.models.Canvas
 import com.sparta.estacionapp.models.Garage
@@ -22,6 +23,9 @@ class InnerMap : Fragment() {
 
     private var currentLevel: Int = 0
 
+    private lateinit var garage_name: TextView
+    private lateinit var garage_email: TextView
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -30,7 +34,13 @@ class InnerMap : Fragment() {
         prev = fragment.findViewById(R.id.prev)
         next = fragment.findViewById(R.id.next)
 
+        garage_name = fragment.findViewById(R.id.garage_name)
+        garage_email = fragment.findViewById(R.id.garage_email)
+
         garage = arguments.getSerializable("CURRENT_GARAGE") as Garage
+
+        garage_name.text = garage.name
+        garage_email.text = garage.email
 
         levels = garage.layouts!!.sortedBy { l -> l.floor_level }
 
