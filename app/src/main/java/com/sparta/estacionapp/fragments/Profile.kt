@@ -39,7 +39,7 @@ class Profile : Fragment() {
         plate = fragment.findViewById(R.id.plate_txt)
         vehicleType = fragment.findViewById(R.id.vehicle_sp)
 
-        name.setText(driver.name)
+        name.setText(driver.full_name)
         email.setText(driver.email)
         plate.setText(driver.vehicle!!.plate)
 
@@ -53,11 +53,11 @@ class Profile : Fragment() {
     private fun saveDriver() {
         val preferences = context.getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE)
 
-        driver.name = name.text.toString()
+        driver.full_name = name.text.toString()
         driver.email = email.text.toString()
         driver.vehicle = Driver.Vehicle(plate.text.toString(), vehiclesTypes[vehicleType.selectedItemPosition])
 
-        DriverService(context).save(driver) { _ ->
+        DriverService(context).save(driver) {
             Toast.makeText(context.applicationContext, getString(R.string.driver_updated_toast), Toast.LENGTH_SHORT).show()
             Driver.login(driver, preferences)
         }

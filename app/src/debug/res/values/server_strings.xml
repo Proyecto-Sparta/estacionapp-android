@@ -1,5 +1,5 @@
 <resources>
     <string name="jwtResponseHeader">authorization</string>
-    <string name="serverAddress">https://estacionapp.herokuapp.com</string>
+    <string name="serverAddress">http://192.168.3.98:4000</string>
     <string name="authorizationRequestHeader">Authorization</string>
 </resources>

@@ -1,10 +1,6 @@
 package com.sparta.estacionapp.models
 
-import android.support.v7.widget.RecyclerView
-import android.view.View
-import android.widget.TextView
 import com.google.android.gms.maps.model.LatLng
-import com.sparta.estacionapp.R
 import java.io.Serializable
 
 class Garage(
@@ -16,25 +12,13 @@ class Garage(
         val pricing: Garage.Pricing?,
         val amenities : List<String>?) : Serializable {
 
-    class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-        private var garageName: TextView = itemView!!.findViewById(R.id.garage_name)
-
-        fun bindWith(garage: Garage) {
-            garageName.text = garage.name
-        }
-    }
-
     data class Pricing (val bike: Double?, val car: Double?, val pickup: Double?, val id: String?) : Serializable
 
     data class SearchResponse (val garages: List<Garage>)
 
     fun latLng(): LatLng = LatLng(location!![1], location[0])
     fun hasAmenity(amenity: String): Boolean {
-        return if (amenities is List<String>) {
-            amenities.contains(amenity)
-        } else {
-            false
-        }
+        return (amenities is List<String>) && amenities.contains(amenity)
     }
 
     companion object {

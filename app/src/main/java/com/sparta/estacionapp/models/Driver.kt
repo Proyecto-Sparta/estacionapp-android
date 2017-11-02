@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import java.io.Serializable
 
 class Driver(
-        var name: String?,
+        var full_name: String?,
         var email: String?,
         var id: Int?,
         var vehicle : Vehicle?) : Serializable {
@@ -33,7 +33,7 @@ class Driver(
             preferences
                     .edit()
                     .putInt("DriverId", driver.id!!)
-                    .putString("DriverName", driver.name)
+                    .putString("DriverName", driver.full_name)
                     .putString("DriverEmail", driver.email)
                     .putString("DriverVehicleType", driver.vehicle!!.type)
                     .putString("DriverVehiclePlate", driver.vehicle!!.plate)

@@ -11,7 +11,6 @@ class ParkingSpace(val x: Float, val y: Float, val height: Float, val width: Flo
         canvas.drawRect(x + offset(), y + offset(), height + x, width + y, paint())
     }
 
-
     private fun offset(): Float = lineWidth()
 
     private fun lineWidth(): Float = 5f

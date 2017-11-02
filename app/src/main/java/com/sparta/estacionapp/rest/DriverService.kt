@@ -35,9 +35,9 @@ class DriverService(val context: Context) {
         })
     }
 
-    fun save(driver: Driver, onSuccess: (Driver) -> Unit) {
-        api.save(jwt, driver.id!!, DriverPatch.from(driver)).enqueue({ driverId, _ ->
-            onSuccess.invoke(driverId)
+    fun save(driver: Driver, onSuccess: () -> Unit) {
+        api.save(jwt, driver.id!!, driver).enqueue({ _, _ ->
+            onSuccess.invoke()
         })
     }
 
@@ -55,21 +55,7 @@ class DriverService(val context: Context) {
         @PATCH("/api/drivers/{id}")
         fun save(@Header("Authorization") loginDigest: String,
                  @Path("id") id: Int,
-                 @Body driver: DriverPatch): Call<Driver>
-
-    }
-
-    class DriverPatch(
-            var full_name: String?,
-            var email: String?,
-            var id: Int?,
-            var vehicle : com.sparta.estacionapp.models.Driver.Vehicle?) : Serializable {
-
-        companion object {
-            fun from(driver : Driver) : DriverPatch {
-                return DriverPatch(driver.name, driver.email, driver.id, driver.vehicle)
-            }
-        }
+                 @Body driver: Driver): Call<Unit>
 
     }
 

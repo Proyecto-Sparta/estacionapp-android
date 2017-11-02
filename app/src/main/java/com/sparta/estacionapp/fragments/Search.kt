@@ -67,7 +67,7 @@ class Search : Fragment() {
     private lateinit var llavesEnable : ImageView
     private lateinit var lavadoEnable : ImageView
     private lateinit var infladorEnable : ImageView
-    private lateinit var hours_24Enable : ImageView
+    private lateinit var hours24Enable: ImageView
     private lateinit var techadoEnable : ImageView
     private lateinit var manejanEnable : ImageView
 
@@ -104,7 +104,7 @@ class Search : Fragment() {
         llavesEnable = fragment.findViewById(R.id.llaves_chk)
         lavadoEnable = fragment.findViewById(R.id.lavado_chk)
         infladorEnable = fragment.findViewById(R.id.inflador_chk)
-        hours_24Enable = fragment.findViewById(R.id.hours_24_chk)
+        hours24Enable = fragment.findViewById(R.id.hours_24_chk)
         techadoEnable = fragment.findViewById(R.id.techado_chk)
         manejanEnable = fragment.findViewById(R.id.manejan_chk)
 
@@ -241,14 +241,14 @@ class Search : Fragment() {
         llavesEnable.setImageResource(getEnableImage(selectedGarage, "llaves"))
         lavadoEnable.setImageResource(getEnableImage(selectedGarage, "lavado"))
         infladorEnable.setImageResource(getEnableImage(selectedGarage, "inflador"))
-        hours_24Enable.setImageResource(getEnableImage(selectedGarage, "hours_24"))
+        hours24Enable.setImageResource(getEnableImage(selectedGarage, "hours_24"))
         techadoEnable.setImageResource(getEnableImage(selectedGarage, "techado"))
         manejanEnable.setImageResource(getEnableImage(selectedGarage, "manejan"))
 
         return true
     }
 
-    fun getEnableImage(garage: Garage, amenity: String): Int {
+    private fun getEnableImage(garage: Garage, amenity: String): Int {
         return if (garage.hasAmenity(amenity)) {
             R.mipmap.ic_yes
         } else {
