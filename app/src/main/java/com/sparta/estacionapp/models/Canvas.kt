@@ -15,10 +15,11 @@ class Canvas : View {
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle)
 
     var elements: List<Drawable> = listOf()
+    var outline: List<Garage.GaragePoint> = listOf()
 
-
-    fun changeElements(newElements: List<Drawable>) {
+    fun changeElements(newElements: List<Drawable>, currentOutline: List<Garage.GaragePoint>) {
         elements = newElements
+        outline = currentOutline
         invalidate()
     }
 
@@ -28,7 +29,25 @@ class Canvas : View {
         canvas!!
         canvas.scale(1f, -1f, canvas.width.toFloat() / 2, canvas.height.toFloat() / 2)
         paintBackground(canvas)
+        paintOutline(canvas)
         elements.forEach { canvas.draw(it) }
+    }
+
+    private fun paintOutline(canvas: Canvas) {
+        var gp = outline[0]
+        val gps = outline.subList(1, outline.size)
+        gps.forEach {
+            canvas.drawLine(gp.x.toFloat(), gp.y.toFloat(), it.x.toFloat(), it.y.toFloat(), paint())
+            gp = it
+        }
+    }
+
+    fun paint(): Paint {
+        val paint = Paint()
+        paint.color = Color.BLACK
+        paint.strokeWidth = 10f
+        paint.style = Paint.Style.STROKE
+        return paint
     }
 
     fun paintBackground(canvas: Canvas) {

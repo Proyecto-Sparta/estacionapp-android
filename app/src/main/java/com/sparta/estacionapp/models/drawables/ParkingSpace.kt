@@ -3,9 +3,10 @@ package com.sparta.estacionapp.models.drawables
 
 import android.graphics.Color
 import android.graphics.Paint
+import java.io.Serializable
 import android.graphics.Canvas as AndroidCanvas
 
-class ParkingSpace(val x: Float, val y: Float, val height: Float, val width: Float) : Drawable {
+class ParkingSpace(val x: Float, val y: Float, val height: Float, val width: Float) : Drawable, Serializable {
 
     override fun drawIn(canvas: AndroidCanvas) {
         canvas.drawRect(x + offset(), y + offset(), height + x, width + y, paint())

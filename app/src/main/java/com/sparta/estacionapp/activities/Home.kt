@@ -18,6 +18,7 @@ import com.sparta.estacionapp.fragments.InnerMap
 import com.sparta.estacionapp.fragments.Profile
 import com.sparta.estacionapp.fragments.Search
 import com.sparta.estacionapp.models.Driver
+import com.sparta.estacionapp.models.Garage
 import com.sparta.estacionapp.rest.DriverService
 import kotterknife.bindView
 
@@ -77,7 +78,7 @@ class Home : AppCompatActivity() {
     private fun onNavigationMenuItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-            R.id.nav_inner_map -> loadFragment(InnerMap())
+            R.id.nav_inner_map -> loadInnerMapFragment()
             R.id.nav_profile -> loadFragment(Profile())
             R.id.nav_search -> loadFragment(Search())
             R.id.nav_log_out -> logOut()
@@ -85,6 +86,12 @@ class Home : AppCompatActivity() {
 
         closeDrawer()
         return true
+    }
+
+    private fun loadInnerMapFragment() {
+        val arguments = Bundle()
+        arguments.putSerializable("CURRENT_GARAGE", Garage.stub())
+        loadFragment(InnerMap(), arguments)
     }
 
     private fun logOut() {
@@ -104,7 +111,8 @@ class Home : AppCompatActivity() {
         preferences.edit().remove("jwt").apply()
     }
 
-    private fun loadFragment(fragment: Fragment) {
+    private fun loadFragment(fragment: Fragment, arguments : Bundle = Bundle()) {
+        fragment.arguments = arguments
         fragManager
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)
