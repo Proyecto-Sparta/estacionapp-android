@@ -43,4 +43,6 @@
     <string name="save">Guardar</string>
     <string name="driver_updated_toast">Datos actualizados correctamente</string>
     <string name="bajada">¡El lugar ya lo tenés!</string>
+    <string name="inner_map_prev"><![CDATA[<<]]></string>
+    <string name="inner_map_next"><![CDATA[>>]]></string>
 </resources>
