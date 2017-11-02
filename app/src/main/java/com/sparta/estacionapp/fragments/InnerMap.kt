@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.models.Canvas
+import com.sparta.estacionapp.models.Garage
 import com.sparta.estacionapp.models.drawables.ParkingSpace
 
 class InnerMap : Fragment() {
@@ -17,6 +18,7 @@ class InnerMap : Fragment() {
     private lateinit var prev: Button
     private lateinit var next: Button
 
+    private lateinit var garage: Garage
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -25,6 +27,8 @@ class InnerMap : Fragment() {
         canvas = fragment.findViewById(R.id.canvas)
         prev = fragment.findViewById(R.id.prev)
         next = fragment.findViewById(R.id.next)
+
+        garage = arguments.getSerializable("CURRENT_GARAGE") as Garage
 
         setActions()
         return fragment
