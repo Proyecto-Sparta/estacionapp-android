@@ -48,7 +48,6 @@ class Home : AppCompatActivity() {
         setupNavigation()
     }
 
-
     override fun onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             closeDrawer()
@@ -107,11 +106,11 @@ class Home : AppCompatActivity() {
         finish()
     }
 
-    private fun removeSharedPreferences(preferences : SharedPreferences) {
+    private fun removeSharedPreferences(preferences: SharedPreferences) {
         preferences.edit().remove("jwt").apply()
     }
 
-    private fun loadFragment(fragment: Fragment, arguments : Bundle = Bundle()) {
+    fun loadFragment(fragment: Fragment, arguments : Bundle = Bundle()) {
         fragment.arguments = arguments
         fragManager
                 .beginTransaction()

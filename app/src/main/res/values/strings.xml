@@ -46,4 +46,5 @@
     <string name="inner_map_next"><![CDATA[>>]]></string>
 
     <string name="reserveProgressTitle">Reservando</string>
+    <string name="navigation_message">En camino!</string>
 </resources>

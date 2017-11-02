@@ -30,6 +30,7 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.*
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.sparta.estacionapp.R
+import com.sparta.estacionapp.activities.Home
 import com.sparta.estacionapp.models.Driver
 import com.sparta.estacionapp.models.Garage
 import com.sparta.estacionapp.models.MapNavigation
@@ -104,11 +105,17 @@ class Search : Fragment() {
         reserve.setOnClickListener {
             DriverService.reserveGarage(selectedGarage, Driver.current())
             showProgress(true)
-            DriverService.reservationResponse(Driver.current(), {
-                showProgress(false)
-                MapNavigation(activity).navigateTo(selectedGarage)
-            })
+            startNavigation(selectedGarage)
+//            DriverService.reservationResponse(Driver.current(), {
+//                showProgress(false)
+//                startNavigation(selectedGarage)
+//            })
         }
+    }
+
+    private fun startNavigation(selectedGarage: Garage) {
+        val home = activity as Home
+        home.loadFragment(Navigation.withGarage(selectedGarage))
     }
 
     private fun getRadio(progress: Int) = (progress + 1) * 100
