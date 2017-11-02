@@ -10,7 +10,6 @@ import android.widget.Button
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.models.Canvas
 import com.sparta.estacionapp.models.Garage
-import com.sparta.estacionapp.models.drawables.ParkingSpace
 
 class InnerMap : Fragment() {
 
@@ -19,6 +18,9 @@ class InnerMap : Fragment() {
     private lateinit var next: Button
 
     private lateinit var garage: Garage
+    private lateinit var levels: List<Garage.GarageLayout>
+
+    private var currentLevel: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -30,13 +32,30 @@ class InnerMap : Fragment() {
 
         garage = arguments.getSerializable("CURRENT_GARAGE") as Garage
 
+        levels = garage.layouts!!.sortedBy { l -> l.floor_level }
+
+        drawLevel(currentLevel)
+
         setActions()
         return fragment
     }
 
     private fun setActions() {
-        prev.setOnClickListener { _ -> canvas.changeElements(listOf(ParkingSpace(0f, 0f, 100f, 100f), ParkingSpace(500f, 200f, 100f, 100f), ParkingSpace(600f, 600f, 200f, 100f))) }
-        next.setOnClickListener { _ -> canvas.changeElements(listOf(ParkingSpace(100f, 100f, 300f, 300f))) }
+        prev.setOnClickListener { prevLayout() }
+        next.setOnClickListener { nextLayout() }
+    }
+
+    private fun nextLayout() {
+        drawLevel(Math.min((currentLevel + 1), levels.size - 1))
+    }
+
+    private fun prevLayout() {
+        drawLevel(Math.max((currentLevel - 1), 0))
+    }
+
+    private fun drawLevel(level : Int) {
+        currentLevel = level
+        canvas.changeElements(levels[level].parking_spaces!!, garage.outline!!)
     }
 
 }

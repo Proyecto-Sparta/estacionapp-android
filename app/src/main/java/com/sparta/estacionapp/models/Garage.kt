@@ -36,16 +36,22 @@ class Garage(
                 distance = 10.5,
                 pricing = Pricing(5.0, 50.0, 80.0, "1"),
                 amenities = listOf("bici", "auto", "camioneta", "llaves", "lavado", "inflador", "hours_24", "techado", "manejan"),
-                outline = listOf(GaragePoint(0.0, 0.0)),
+                outline = listOf(
+                        GaragePoint(100.0, 100.0),
+                        GaragePoint(1000.0, 100.0),
+                        GaragePoint(1000.0, 1000.0),
+                        GaragePoint(100.0, 1000.0),
+                        GaragePoint(100.0, 100.0)
+                ),
                 layouts = listOf(
                         GarageLayout(1, 1, listOf(
                                 ParkingSpace(0f, 0f, 100f, 100f),
                                 ParkingSpace(500f, 200f, 100f, 100f),
                                 ParkingSpace(600f, 600f, 200f, 100f))
                         ),
-                        GarageLayout(1, 1, listOf(
+                        GarageLayout(2, 2, listOf(
                                 ParkingSpace(0f, 0f, 120f, 120f),
-                                ParkingSpace(550f, 300f, 10f, 10f))
+                                ParkingSpace(550f, 300f, 50f, 100f))
                         )
                 )
         )
