@@ -36,7 +36,7 @@ class DriverService(val context: Context) {
     }
 
     fun save(driver: Driver, onSuccess: () -> Unit) {
-        api.save(jwt, driver.id!!, driver).enqueue({ _, _ ->
+        api.save(jwt, driver).enqueue({ _, _ ->
             onSuccess.invoke()
         })
     }
@@ -52,9 +52,8 @@ class DriverService(val context: Context) {
                          @Query("longitude") long: Double,
                          @Query("max_distance") maxDistance : Int): Call<Garage.SearchResponse>
 
-        @PATCH("/api/drivers/{id}")
+        @PATCH("/api/drivers")
         fun save(@Header("Authorization") loginDigest: String,
-                 @Path("id") id: Int,
                  @Body driver: Driver): Call<Unit>
 
     }
