@@ -42,7 +42,7 @@ class DriverService(val context: Context) {
 
     interface DriverService {
 
-        @GET("/api/drivers/login")
+        @POST("/api/drivers/login")
         fun login(@Header("Authorization") loginDigest: String): Call<Driver>
 
         @GET("/api/garages/search")
