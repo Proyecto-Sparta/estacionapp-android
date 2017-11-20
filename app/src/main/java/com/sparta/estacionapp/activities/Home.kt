@@ -19,7 +19,9 @@ import com.sparta.estacionapp.fragments.Profile
 import com.sparta.estacionapp.fragments.Search
 import com.sparta.estacionapp.models.Driver
 import com.sparta.estacionapp.models.Garage
+import com.sparta.estacionapp.models.responses.DriverResponse
 import com.sparta.estacionapp.rest.DriverService
+import com.sparta.estacionapp.services.Constants
 import kotterknife.bindView
 
 class Home : AppCompatActivity() {
@@ -46,8 +48,8 @@ class Home : AppCompatActivity() {
 
         setupDrawer(toolbar)
         setupNavigation()
-    }
 
+    }
 
     override fun onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -88,9 +90,10 @@ class Home : AppCompatActivity() {
         return true
     }
 
-    private fun loadInnerMapFragment() {
+    fun loadInnerMapFragment(garage: Garage = Garage.stub(), driverResponse: DriverResponse = DriverResponse(0, false, 0, "")) {
         val arguments = Bundle()
-        arguments.putSerializable("CURRENT_GARAGE", Garage.stub())
+        arguments.putSerializable(Constants.CURRENT_GARAGE, garage)
+        arguments.putSerializable(Constants.DRIVER_RESPONSE, driverResponse)
         loadFragment(InnerMap(), arguments)
     }
 
@@ -107,7 +110,7 @@ class Home : AppCompatActivity() {
         finish()
     }
 
-    private fun removeSharedPreferences(preferences : SharedPreferences) {
+    private fun removeSharedPreferences(preferences: SharedPreferences) {
         preferences.edit().remove("jwt").apply()
     }
 
