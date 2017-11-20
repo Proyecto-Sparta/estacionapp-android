@@ -50,7 +50,7 @@
             android:exported="true" />
 
         <receiver
-            android:name=".fragments.Navigation$GarageProximity"
+            android:name=".services.Location$ProximityListener"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

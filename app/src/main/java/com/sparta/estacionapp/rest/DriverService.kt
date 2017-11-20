@@ -75,8 +75,7 @@ class DriverService(val context: Context) {
         }
 
         fun reservationResponse(driver: Driver, onResponse: DriverReservationResponse) {
-            val ref = drivers.child(driver.id.toString())
-            ref.childAdded(onResponse)
+            drivers.child(driver.id.toString()).childAdded(onResponse)
         }
     }
 }

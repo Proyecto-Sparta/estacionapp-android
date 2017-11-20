@@ -1,6 +1,5 @@
 package com.sparta.estacionapp.fragments
 
-
 import android.content.*
 import android.os.Bundle
 import android.os.IBinder
@@ -8,31 +7,25 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.gms.maps.MapFragment
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.models.Garage
 import com.sparta.estacionapp.models.MapNavigation
+import com.sparta.estacionapp.models.responses.DriverResponse
 import com.sparta.estacionapp.services.Constants
 import com.sparta.estacionapp.services.Location
-
 
 class Navigation : Fragment() {
 
     private lateinit var location: Location
     private lateinit var garage: Garage
+    private lateinit var driverResponse: DriverResponse
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         garage = arguments.getSerializable(Constants.CURRENT_GARAGE) as Garage
-        initBroadcastReceiver()
+        driverResponse= arguments.getSerializable(Constants.DRIVER_RESPONSE) as DriverResponse
         bindLocationService()
-        MapNavigation(activity).navigateTo(garage);
-    }
-
-    private fun initBroadcastReceiver() {
-        val broadcastReceiver = GarageProximity()
-        val filter = IntentFilter(Location.PROXIMITY_ACTION)
-        activity.registerReceiver(broadcastReceiver, filter)
+        MapNavigation(activity).navigateTo(garage)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -57,13 +50,5 @@ class Navigation : Fragment() {
         }
 
         activity.bindService(bindIntent, connection, Context.BIND_AUTO_CREATE)
-    }
-
-
-    class GarageProximity : BroadcastReceiver() {
-
-        override fun onReceive(context: Context, intent: Intent) {
-            println("HOLA" + intent.action)
-        }
     }
 }

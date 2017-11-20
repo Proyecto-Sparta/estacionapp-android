@@ -119,10 +119,7 @@ class Search : Fragment() {
 
     private fun startNavigation(selectedGarage: Garage, driverResponse: DriverResponse) {
         val home = activity as Home
-        val arguments = Bundle()
-        arguments.putSerializable(Constants.CURRENT_GARAGE, selectedGarage)
-        arguments.putSerializable(Constants.DRIVER_RESPONSE, selectedGarage)
-        home.loadFragment(Navigation(), arguments)
+        home.loadInnerMapFragment(selectedGarage, driverResponse)
     }
 
     private fun getRadio(progress: Int) = (progress + 1) * 100
