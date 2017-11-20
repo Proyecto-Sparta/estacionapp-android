@@ -8,8 +8,11 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.gms.maps.MapFragment
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.models.Garage
+import com.sparta.estacionapp.models.MapNavigation
+import com.sparta.estacionapp.services.Constants
 import com.sparta.estacionapp.services.Location
 
 
@@ -20,9 +23,10 @@ class Navigation : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        garage = arguments.getSerializable("garage") as Garage
+        garage = arguments.getSerializable(Constants.CURRENT_GARAGE) as Garage
         initBroadcastReceiver()
         bindLocationService()
+        MapNavigation(activity).navigateTo(garage);
     }
 
     private fun initBroadcastReceiver() {
@@ -46,23 +50,13 @@ class Navigation : Fragment() {
             }
 
             override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-                val service = service as Location.LocalBinder
-                location = service.service
+                val localBinder = service as Location.LocalBinder
+                location = localBinder.service
                 location.setProximityAlert(garage, activity)
             }
         }
 
         activity.bindService(bindIntent, connection, Context.BIND_AUTO_CREATE)
-    }
-
-    companion object {
-        fun withGarage(garage: Garage): Navigation {
-            val arguments = Bundle()
-            arguments.putSerializable("garage", garage)
-            val fragment = Navigation()
-            fragment.arguments = arguments
-            return fragment
-        }
     }
 
 

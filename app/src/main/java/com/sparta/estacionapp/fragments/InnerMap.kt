@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.models.Canvas
 import com.sparta.estacionapp.models.Garage
+import com.sparta.estacionapp.services.Constants
 
 class InnerMap : Fragment() {
 
@@ -37,7 +38,7 @@ class InnerMap : Fragment() {
         garage_name = fragment.findViewById(R.id.garage_name)
         garage_email = fragment.findViewById(R.id.garage_email)
 
-        garage = arguments.getSerializable("CURRENT_GARAGE") as Garage
+        garage = arguments.getSerializable(Constants.CURRENT_GARAGE) as Garage
 
         garage_name.text = garage.name
         garage_email.text = garage.email
@@ -71,12 +72,3 @@ class InnerMap : Fragment() {
     }
 
 }
-
-
-
-/*
-            val gmmIntentUri = Uri.parse("google.navigation:q=Taronga+Zoo,+Sydney+Australia")
-            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-            mapIntent.`package` = "com.google.android.apps.maps"
-            startActivity(mapIntent)
-*/

@@ -47,4 +47,5 @@
 
     <string name="reserveProgressTitle">Reservando</string>
     <string name="navigation_message">En camino!</string>
+    <string name="reservation_rejected_message">La reserva fue denegada, pruebe en otro estacionamiento</string>
 </resources>

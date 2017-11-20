@@ -33,8 +33,9 @@ import com.sparta.estacionapp.R
 import com.sparta.estacionapp.activities.Home
 import com.sparta.estacionapp.models.Driver
 import com.sparta.estacionapp.models.Garage
-import com.sparta.estacionapp.models.MapNavigation
+import com.sparta.estacionapp.models.responses.DriverResponse
 import com.sparta.estacionapp.rest.DriverService
+import com.sparta.estacionapp.services.Constants
 
 class Search : Fragment() {
 
@@ -102,20 +103,26 @@ class Search : Fragment() {
     }
 
     private fun setupReserveAction() {
-        reserve.setOnClickListener {
-            DriverService.reserveGarage(selectedGarage, Driver.current())
-            showProgress(true)
-            startNavigation(selectedGarage)
-//            DriverService.reservationResponse(Driver.current(), {
-//                showProgress(false)
-//                startNavigation(selectedGarage)
-//            })
+         reserve.setOnClickListener {
+             showProgress(true)
+             DriverService.reserveGarage(selectedGarage, Driver.current())
+             DriverService.reservationResponse(Driver.current(), { driverResponse ->
+                 showProgress(false)
+                 if (driverResponse.isAccepted) {
+                     startNavigation(selectedGarage, driverResponse)
+                 } else {
+                     Toast.makeText(context, getString(R.string.reservation_rejected_message), Toast.LENGTH_LONG).show()
+                 }
+            })
         }
     }
 
-    private fun startNavigation(selectedGarage: Garage) {
+    private fun startNavigation(selectedGarage: Garage, driverResponse: DriverResponse) {
         val home = activity as Home
-        home.loadFragment(Navigation.withGarage(selectedGarage))
+        val arguments = Bundle()
+        arguments.putSerializable(Constants.CURRENT_GARAGE, selectedGarage)
+        arguments.putSerializable(Constants.DRIVER_RESPONSE, selectedGarage)
+        home.loadFragment(Navigation(), arguments)
     }
 
     private fun getRadio(progress: Int) = (progress + 1) * 100

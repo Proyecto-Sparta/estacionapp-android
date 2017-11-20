@@ -20,6 +20,7 @@ import com.sparta.estacionapp.fragments.Search
 import com.sparta.estacionapp.models.Driver
 import com.sparta.estacionapp.models.Garage
 import com.sparta.estacionapp.rest.DriverService
+import com.sparta.estacionapp.services.Constants
 import kotterknife.bindView
 
 class Home : AppCompatActivity() {
@@ -89,7 +90,7 @@ class Home : AppCompatActivity() {
 
     private fun loadInnerMapFragment() {
         val arguments = Bundle()
-        arguments.putSerializable("CURRENT_GARAGE", Garage.stub())
+        arguments.putSerializable(Constants.CURRENT_GARAGE, Garage.stub())
         loadFragment(InnerMap(), arguments)
     }
 

@@ -74,14 +74,9 @@ class DriverService(val context: Context) {
                     .setValue(driver)
         }
 
-        fun reservationResponse(driver: Driver, onResponse: GarageReservationResponse) {
-            drivers
-                    .child(driver.id.toString())
-                    .setValue(false)
-
-            drivers
-                    .child(driver.id.toString())
-                    .childAdded(onResponse)
+        fun reservationResponse(driver: Driver, onResponse: DriverReservationResponse) {
+            val ref = drivers.child(driver.id.toString())
+            ref.childAdded(onResponse)
         }
     }
 }
