@@ -57,10 +57,10 @@ class InnerMap : Fragment() {
         garage_name.text = garage.name
         garage_email.text = garage.email
 
-        levels = if (garage.layouts == null) Garage.stub().layouts!! else garage.layouts!!.sortedBy { l -> l.floor_level }
+        levels = if (garage.layouts == null) Garage.stub().layouts!! else garage.layouts!!
         outline = if (garage.outline == null) Garage.stub().outline!! else garage.outline!!
 
-        currentLevel = if (driverResponse.floor == null) 0 else driverResponse.floor!!.toInt()
+        currentLevel = if (driverResponse.floor == null) 0 else driverResponse.floor!!.toInt() - 1
         drawLevel(currentLevel)
 
         setActions()
@@ -104,7 +104,7 @@ class InnerMap : Fragment() {
 
     private fun drawLevel(level : Int) {
         currentLevel = level
-        canvas.changeElements(levels[level].parking_spaces!!, outline)
+        canvas.changeElements(levels[level].parking_spaces!!, outline, driverResponse.parkingSpace!!)
     }
 
 

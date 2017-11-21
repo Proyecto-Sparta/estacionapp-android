@@ -4,5 +4,5 @@ import java.io.Serializable
 
 data class DriverResponse(var garage: Long,
                           var isAccepted: Boolean,
-                          var floor: Long? = null,
-                          var parkingSpace: String? = null) : Serializable
+                          var floor: Long?,
+                          var parkingSpace: String?) : Serializable

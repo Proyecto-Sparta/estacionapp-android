@@ -15,7 +15,7 @@ fun DatabaseReference.childAdded(callback: DriverReservationResponse) {
                     isAccepted = data.child("isAccepted").value as Boolean,
                     floor = data.child("floor").value as Long?,
                     parkingSpace = data.child("parkingSpace").value as String?)
-            data.ref.removeValue();
+            data.ref.removeValue()
             removeEventListener(this)
             callback.invoke(driverResponse)
         }

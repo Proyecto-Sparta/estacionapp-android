@@ -16,10 +16,12 @@ class Canvas : View {
 
     var elements: List<Drawable> = listOf()
     var outline: List<Garage.GaragePoint> = listOf()
+    var parkingSpace: String = ""
 
-    fun changeElements(newElements: List<Drawable>, currentOutline: List<Garage.GaragePoint>) {
+    fun changeElements(newElements: List<Drawable>, currentOutline: List<Garage.GaragePoint>, parkingSpaceId: String) {
         elements = newElements
         outline = currentOutline
+        parkingSpace = parkingSpaceId
         invalidate()
     }
 
@@ -29,8 +31,8 @@ class Canvas : View {
         canvas!!
         canvas.scale(1f, -1f, canvas.width.toFloat() / 2, canvas.height.toFloat() / 2)
         paintBackground(canvas)
+        elements.forEach { canvas.draw(it, parkingSpace) }
         paintOutline(canvas)
-        elements.forEach { canvas.draw(it) }
     }
 
     private fun paintOutline(canvas: Canvas) {
@@ -59,7 +61,7 @@ class Canvas : View {
 }
 
 
-fun Canvas.draw(element: Drawable) {
-    element.drawIn(this)
+fun Canvas.draw(element: Drawable, parkingSpaceId: String) {
+    element.drawIn(this, parkingSpaceId)
 }
 
