@@ -1,6 +1,7 @@
 package com.sparta.estacionapp.models.drawables
 
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Paint
 import java.io.Serializable
@@ -15,9 +16,10 @@ class ParkingSpace(val x: Float,
                    val shape: String = "square",
                    val id: String = "") : Drawable, Serializable {
 
+    @SuppressLint("NewApi")
     override fun drawIn(canvas: AndroidCanvas, parkingSpaceId: String) {
-        canvas.drawRect(x + offset(), y + offset(), height + x, width + y, paintFill(parkingSpaceId))
-        canvas.drawRect(x + offset(), y + offset(), height + x, width + y, paintStroke())
+        canvas.drawRoundRect(x + offset(), y + offset(), width + x, height + y, height/5, height/5, paintFill(parkingSpaceId))
+        canvas.drawRoundRect(x + offset(), y + offset(), width + x, height + y, height/5, height/5, paintStroke())
     }
 
     private fun offset(): Float = lineWidth() / 2

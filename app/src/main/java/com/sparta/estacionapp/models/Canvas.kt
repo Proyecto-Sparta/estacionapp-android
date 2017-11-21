@@ -18,10 +18,22 @@ class Canvas : View {
     var outline: List<Garage.GaragePoint> = listOf()
     var parkingSpace: String = ""
 
+    private var width: Float = 0f
+    private var height: Float = 0f
+
     fun changeElements(newElements: List<Drawable>, currentOutline: List<Garage.GaragePoint>, parkingSpaceId: String) {
         elements = newElements
-        outline = currentOutline
+        outline = currentOutline + listOf(currentOutline[0])
         parkingSpace = parkingSpaceId
+
+        val minx = outline.minBy { it.x }!!.x
+        val maxx = outline.maxBy { it.x }!!.x
+        val miny = outline.minBy { it.x }!!.y
+        val maxy = outline.maxBy { it.x }!!.y
+
+        width = (maxx + minx).toFloat()
+        height = (maxy + miny).toFloat()
+
         invalidate()
     }
 
@@ -29,7 +41,10 @@ class Canvas : View {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         canvas!!
-        canvas.scale(1f, -1f, canvas.width.toFloat() / 2, canvas.height.toFloat() / 2)
+
+        val scale = Math.min(canvas.width / width, canvas.height / height)
+
+        canvas.scale(scale, scale, 0f, 0f)
         paintBackground(canvas)
         elements.forEach { canvas.draw(it, parkingSpace) }
         paintOutline(canvas)
