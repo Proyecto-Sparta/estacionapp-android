@@ -255,7 +255,6 @@ class Search : Fragment() {
         googleMap.uiSettings.isZoomControlsEnabled = true
         googleMap.setOnMarkerClickListener { openGarageDetails(it) }
         googleMap.setOnMapLoadedCallback { requestLocationPermission() }
-        searchGarages(LatLng(-34.585000, -58.414000))
     }
 
     private fun openGarageDetails(marker: Marker?): Boolean {
@@ -340,7 +339,7 @@ class Search : Fragment() {
     private val locationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
             if (currentPositionEntry == null) {
-                updateMarker(LatLng(location.latitude, location.longitude))
+                searchGarages(LatLng(location.latitude, location.longitude))
             }
         }
 
