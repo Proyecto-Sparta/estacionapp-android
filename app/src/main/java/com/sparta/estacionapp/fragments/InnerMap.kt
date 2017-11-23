@@ -38,6 +38,7 @@ class InnerMap : Fragment() {
 
     private lateinit var garage_name: TextView
     private lateinit var garage_email: TextView
+    private lateinit var txt_floor: TextView
     private lateinit var outline: List<Garage.GaragePoint>
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -47,6 +48,7 @@ class InnerMap : Fragment() {
         canvas = fragment.findViewById(R.id.canvas)
         prev = fragment.findViewById(R.id.prev)
         next = fragment.findViewById(R.id.next)
+        txt_floor = fragment.findViewById(R.id.txt_floor)
 
         garage = arguments.getSerializable(Constants.CURRENT_GARAGE) as Garage
         driverResponse = arguments.getSerializable(Constants.DRIVER_RESPONSE) as DriverResponse
@@ -77,11 +79,19 @@ class InnerMap : Fragment() {
     }
 
     private fun nextLayout() {
-        drawLevel(Math.min((currentLevel + 1), levels.size - 1))
+        val level = Math.min((currentLevel + 1), levels.size - 1)
+        drawLevel(level)
+        changeFloorText(level)
     }
 
     private fun prevLayout() {
-        drawLevel(Math.max((currentLevel - 1), 0))
+        val level = Math.max((currentLevel - 1), 0)
+        drawLevel(level)
+        changeFloorText(level)
+    }
+
+    private fun changeFloorText(level: Int) {
+        txt_floor.text = "Piso ${level + 1} de ${levels.size}"
     }
 
     private fun bindLocationService() {

@@ -78,6 +78,14 @@
             android:text="@string/inner_map_prev"
             tools:ignore="RelativeOverlap" />
 
+        <TextView
+            android:id="@+id/txt_floor"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Piso 1 de 1"
+            android:paddingTop="14dp"
+            android:textAlignment="center"/>
+
         <Button
             android:id="@+id/next"
             android:background="@drawable/button_round"
