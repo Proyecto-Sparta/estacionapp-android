@@ -47,7 +47,7 @@ class Canvas : View {
         super.onDraw(canvas)
         canvas!!
 
-        val scale = Math.min(canvas.width / outlineWidth, canvas.height / outlineHeight)
+        val scale = 1.20f
 
         canvas.scale(scale, scale, 0f, 0f)
         paintBackground(canvas)
