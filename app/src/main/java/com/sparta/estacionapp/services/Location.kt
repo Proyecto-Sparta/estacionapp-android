@@ -54,7 +54,7 @@ class Location : Service() {
 
     companion object {
         val PROXIMITY_ACTION = "com.sparta.estacionapp.PROXIMITY_ACTION"
-        var DISTANCE = 100f
+        var DISTANCE = 25f
     }
 
     class ProximityListener(val pendingIntent: PendingIntent,
@@ -73,9 +73,6 @@ class Location : Service() {
 
                 ContextCompat.startActivity(context, bringToForegroundIntent, null)
                 locationManager.removeProximityAlert(pendingIntent)
-            } else {
-                locationManager.removeProximityAlert(pendingIntent)
-                locationManager.addProximityAlert(location.latitude, location.longitude, DISTANCE, -1, pendingIntent)
             }
         }
     }

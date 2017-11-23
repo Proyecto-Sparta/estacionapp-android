@@ -133,7 +133,7 @@ class InnerMap : Fragment() {
         activity.bindService(bindIntent, connection, Context.BIND_AUTO_CREATE)
     }
 
-    private fun drawLevel(level : Int) {
+    private fun drawLevel(level: Int) {
         currentLevel = level
         canvas.changeElements(levels[level].parking_spaces!!, outline, driverResponse.parkingSpace!!)
     }
