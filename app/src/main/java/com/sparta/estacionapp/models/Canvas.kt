@@ -18,21 +18,26 @@ class Canvas : View {
     var outline: List<Garage.GaragePoint> = listOf()
     var parkingSpace: String = ""
 
-    private var width: Float = 0f
-    private var height: Float = 0f
+    private var outlineWidth: Float = 0f
+    private var outlineHeight: Float = 0f
+
+    private var minx: Float = 1f
+    private var maxx: Float = 1f
+    private var miny: Float = 1f
+    private var maxy: Float = 1f
 
     fun changeElements(newElements: List<Drawable>, currentOutline: List<Garage.GaragePoint>, parkingSpaceId: String) {
         elements = newElements
         outline = currentOutline + listOf(currentOutline[0])
         parkingSpace = parkingSpaceId
 
-        val minx = outline.minBy { it.x }!!.x
-        val maxx = outline.maxBy { it.x }!!.x
-        val miny = outline.minBy { it.x }!!.y
-        val maxy = outline.maxBy { it.x }!!.y
+        minx = outline.minBy { it.x }!!.x.toFloat()
+        maxx = outline.maxBy { it.x }!!.x.toFloat()
+        miny = outline.minBy { it.x }!!.y.toFloat()
+        maxy = outline.maxBy { it.x }!!.y.toFloat()
 
-        width = (maxx + minx).toFloat()
-        height = (maxy + miny).toFloat()
+        outlineWidth = (maxx - minx)
+        outlineHeight = (maxy - miny)
 
         invalidate()
     }
@@ -42,7 +47,7 @@ class Canvas : View {
         super.onDraw(canvas)
         canvas!!
 
-        val scale = Math.min(canvas.width / width, canvas.height / height)
+        val scale = Math.min(canvas.width / outlineWidth, canvas.height / outlineHeight)
 
         canvas.scale(scale, scale, 0f, 0f)
         paintBackground(canvas)
