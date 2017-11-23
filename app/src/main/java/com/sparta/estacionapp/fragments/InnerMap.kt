@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import com.google.gson.Gson
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.activities.Home
@@ -93,6 +94,7 @@ class InnerMap : Fragment() {
             edit.remove(Constants.CURRENT_GARAGE)
             edit.remove(Constants.DRIVER_RESPONSE)
             edit.apply()
+            Toast.makeText(context, "Gracias por usar EstacionApp", Toast.LENGTH_LONG).show()
             (activity as Home).loadSearchFragment()
         }
     }
