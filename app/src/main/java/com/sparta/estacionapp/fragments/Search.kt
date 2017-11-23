@@ -28,6 +28,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.*
+import com.google.gson.Gson
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.activities.Home
@@ -36,6 +37,7 @@ import com.sparta.estacionapp.models.Garage
 import com.sparta.estacionapp.models.responses.DriverResponse
 import com.sparta.estacionapp.rest.DriverService
 import com.sparta.estacionapp.services.Constants
+import org.json.JSONObject
 
 class Search : Fragment() {
 

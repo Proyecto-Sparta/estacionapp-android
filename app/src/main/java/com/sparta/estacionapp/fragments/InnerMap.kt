@@ -12,8 +12,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
+import com.google.gson.Gson
 import com.sparta.estacionapp.R
+import com.sparta.estacionapp.activities.Home
 import com.sparta.estacionapp.models.Canvas
 import com.sparta.estacionapp.models.Garage
 import com.sparta.estacionapp.models.MapNavigation
@@ -28,6 +31,7 @@ class InnerMap : Fragment() {
     private lateinit var canvas: Canvas
     private lateinit var prev: Button
     private lateinit var next: Button
+    private lateinit var llegue: ImageButton
 
     private lateinit var garage: Garage
     private lateinit var driverResponse: DriverResponse
@@ -48,10 +52,17 @@ class InnerMap : Fragment() {
         canvas = fragment.findViewById(R.id.canvas)
         prev = fragment.findViewById(R.id.prev)
         next = fragment.findViewById(R.id.next)
+        llegue = fragment.findViewById(R.id.llegue)
         txt_floor = fragment.findViewById(R.id.txt_floor)
 
         garage = arguments.getSerializable(Constants.CURRENT_GARAGE) as Garage
         driverResponse = arguments.getSerializable(Constants.DRIVER_RESPONSE) as DriverResponse
+
+        val preferences = context.getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE)
+        val edit = preferences.edit()
+        edit.putString(Constants.CURRENT_GARAGE, Gson().toJson(garage, Garage::class.java))
+        edit.putString(Constants.DRIVER_RESPONSE, Gson().toJson(driverResponse, DriverResponse::class.java))
+        edit.apply()
 
         garage_name = fragment.findViewById(R.id.garage_name)
         garage_email = fragment.findViewById(R.id.garage_email)
@@ -76,6 +87,14 @@ class InnerMap : Fragment() {
     private fun setActions() {
         prev.setOnClickListener { prevLayout() }
         next.setOnClickListener { nextLayout() }
+        llegue.setOnClickListener {
+            val preferences = context.getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE)
+            val edit = preferences.edit()
+            edit.remove(Constants.CURRENT_GARAGE)
+            edit.remove(Constants.DRIVER_RESPONSE)
+            edit.apply()
+            (activity as Home).loadSearchFragment()
+        }
     }
 
     private fun nextLayout() {

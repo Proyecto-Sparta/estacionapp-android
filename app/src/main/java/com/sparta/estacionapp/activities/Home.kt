@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
+import com.google.gson.Gson
 import com.sparta.estacionapp.R
 import com.sparta.estacionapp.fragments.InnerMap
 import com.sparta.estacionapp.fragments.Profile
@@ -23,6 +24,7 @@ import com.sparta.estacionapp.models.responses.DriverResponse
 import com.sparta.estacionapp.rest.DriverService
 import com.sparta.estacionapp.services.Constants
 import kotterknife.bindView
+import org.json.JSONObject
 
 class Home : AppCompatActivity() {
 
@@ -44,6 +46,13 @@ class Home : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             loadFragment(Search())
+        }
+
+        val preferences = getSharedPreferences(getString(R.string.shared_fike), Context.MODE_PRIVATE)
+        if (preferences.contains(Constants.CURRENT_GARAGE)) {
+            val garage = Gson().fromJson<Garage>(preferences.getString(Constants.CURRENT_GARAGE, ""), Garage::class.java)
+            val driverResponse = Gson().fromJson<DriverResponse>(preferences.getString(Constants.DRIVER_RESPONSE, ""), DriverResponse::class.java)
+            loadInnerMapFragment(garage, driverResponse)
         }
 
         setupDrawer(toolbar)
@@ -119,5 +128,9 @@ class Home : AppCompatActivity() {
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit()
+    }
+
+    fun loadSearchFragment() {
+        loadFragment(Search())
     }
 }
