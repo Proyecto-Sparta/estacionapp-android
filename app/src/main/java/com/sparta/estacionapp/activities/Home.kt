@@ -80,7 +80,6 @@ class Home : AppCompatActivity() {
     private fun onNavigationMenuItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-            R.id.nav_inner_map -> loadInnerMapFragment()
             R.id.nav_profile -> loadFragment(Profile())
             R.id.nav_search -> loadFragment(Search())
             R.id.nav_log_out -> logOut()
